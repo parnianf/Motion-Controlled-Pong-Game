@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AndroidLayouts">
+    <shared>
+      <config />
+    </shared>
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="NONE" />
   </component>
@@ -90,6 +95,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
+    "android-custom-viewC:/Users/Parnian/AndroidStudioProjects/CPSCA2/app/src/main/java/CPS/CPSCA2/Pong/Activity/GameView.java_SELECTED": "GameView",
     "cidr.known.project.marker": "true",
     "last_directory_selection": "C:/Users/Parnian/AndroidStudioProjects/CPSCA2/app/src/main/java",
     "memory.settings.postsync.last.time.stamp": "1683880534248"
