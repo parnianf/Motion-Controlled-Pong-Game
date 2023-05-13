@@ -1,53 +1,57 @@
-//package CPS.CPSCA2.Pong.Domain;
-//
-//import android.util.Pair;
-//import android.widget.ImageView;
-//import com.mobina.legendofbounca.core.utils.RandomGenerator;
-//import com.mobina.legendofbounca.core.config.GameConfig;
-//import com.mobina.legendofbounca.core.config.GamePhysicsConfig;
-//import java.lang.Math;
-//
-//public class Ball {
-//    private Coordinate position;
-//    private Coordinate velocity;
-//    private Coordinate acceleration;
-//    private ImageView imgView;
-//    private Coordinate theta;
-//    private int displayWidth;
-//    private int displayHeight;
-//    private float radius;
-//
-//    public Ball(Coordinate x, Coordinate v, Coordinate a,
-//                ImageView imgView, Pair<Integer, Integer> displaySize, float radius) {
-//        this.position = x;
-//        this.velocity = v;
-//        this.acceleration = a;
-//        this.imgView = imgView;
-//        this.theta = new Coordinate(0, 0, 0);
-//        this.displayWidth = displaySize.first;
-//        this.displayHeight = displaySize.second;
-//        this.radius = radius;
-//    }
-//
-//    private Coordinate getNextPosition(double deltaT) {
-//        Coordinate amountToAdd1 = acceleration.multiplyVectorByNum(0.5*(Math.pow(deltaT, 2)));
-//        Coordinate amountToAdd2 = velocity.multiplyVectorByNum(deltaT);
-//        amountToAdd1.vectorAddition(amountToAdd2);
-//        return new Coordinate(position.x + amountToAdd1.x,
-//                position.y + amountToAdd1.y,
-//                position.z + amountToAdd1.z);
-//    }
-//
-//    private void updateVelocity(double deltaT) {
-//        Coordinate amountToAdd = acceleration.multiplyVectorByNum(deltaT);
-//        velocity.vectorAddition(amountToAdd);
-//    }
-//
+package CPS.CPSCA2.Pong.Domain;
+
+import android.util.Pair;
+import android.widget.ImageView;
+
+import java.lang.Math;
+
+public class Ball {
+    private Coordinate position;
+    private Coordinate velocity;
+    private Coordinate acceleration;
+    private Coordinate theta;
+    private int displayWidth;
+    private int displayHeight;
+    private float radius;
+
+    public Ball(Coordinate x, Coordinate v, Coordinate a,
+                Pair<Integer, Integer> displaySize, float radius) {
+        this.position = x;
+        this.velocity = v;
+        this.acceleration = a;
+        this.theta = new Coordinate(0, 0, 0);
+        this.displayWidth = displaySize.first;
+        this.displayHeight = displaySize.second;
+        this.radius = radius;
+    }
+
+    public Coordinate getPosition() {
+        return position;
+    }
+
+    public void setNextPosition(double deltaT) {
+        position = getNextPosition(deltaT);
+    }
+
+    private Coordinate getNextPosition(double deltaT) {
+        Coordinate amountToAdd1 = acceleration.multiplyVectorByNum(0.5 * (Math.pow(deltaT, 2)));
+        Coordinate amountToAdd2 = velocity.multiplyVectorByNum(deltaT);
+        amountToAdd1.vectorAddition(amountToAdd2);
+        return new Coordinate(position.x + amountToAdd1.x,
+                position.y + amountToAdd1.y,
+                position.z + amountToAdd1.z);
+    }
+
+    private void updateVelocity(double deltaT) {
+        Coordinate amountToAdd = acceleration.multiplyVectorByNum(deltaT);
+        velocity.vectorAddition(amountToAdd);
+    }
+
 //    private void updateAcceleration(Coordinate F) {
 //        acceleration.x = (F.x / GameConfig.BALL_WEIGHT) * GameConfig.ACCELERATION_FACTOR;
 //        acceleration.y = (F.y / GameConfig.BALL_WEIGHT) * GameConfig.ACCELERATION_FACTOR;
 //    }
-//
+
 //    public void generateRandomVelocity() {
 //        double randomFloat = Math.random();
 //        int randomSign = (randomFloat > 0.5) ? 1 : -1;
@@ -57,7 +61,7 @@
 //                GameConfig.RANDOM_VELOCITY_HIGH, 0, 0);
 //        velocity.y *= randomSign;
 //    }
-//
+
 //    public boolean checkWallCollision(Coordinate position) {
 //        boolean xCollided = (position.x <= 0) ||
 //                (position.x >= displayWidth);
@@ -92,10 +96,6 @@
 //        return collided;
 //    }
 //
-//    public void updateImgView() {
-//        imgView.setX((float) position.x);
-//        imgView.setY((float) position.y);
-//    }
 //
 //    public void handleSensorEvent(Coordinate vec, GameConfig.sensor sensor, double deltaT) {
 //        if (sensor == GameConfig.sensor.GYROSCOPE) {
@@ -112,7 +112,6 @@
 //            updateVelocity(deltaT);
 //        }
 //        position = getNextPosition(deltaT);
-//        updateImgView();
 //    }
 //
 //    private void handlePhysics() {
@@ -150,11 +149,10 @@
 //                    frictionY = frictionSize * velocity.y / velocitySize;
 //                }
 //                if (velocity.x != 0)
-//                    F.x += velocity.x > 0 ? -Math.abs(frictionX): Math.abs(frictionX);
+//                    F.x += velocity.x > 0 ? -Math.abs(frictionX) : Math.abs(frictionX);
 //                if (velocity.y != 0)
-//                    F.y += velocity.y > 0 ? -Math.abs(frictionY): Math.abs(frictionY);
-//            }
-//            else {
+//                    F.y += velocity.y > 0 ? -Math.abs(frictionY) : Math.abs(frictionY);
+//            } else {
 //                F = new Coordinate(0, 0, 0);
 //            }
 //        }
@@ -177,4 +175,4 @@
 //        double frictionSize = N * GamePhysicsConfig.Us;
 //        return f.getSize() > frictionSize;
 //    }
-//}
+}
