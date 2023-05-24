@@ -52,8 +52,15 @@ public class Ball {
         velocity.y += acceleration.y * deltaT;
     }
 
+    public void reverseBallVelocity() {
+        velocity.y = -velocity.y;
+    }
 
-//    private void updateAcceleration(Coordinate F) {
+    public float getRadius() {
+        return radius;
+    }
+
+    //    private void updateAcceleration(Coordinate F) {
 //        acceleration.x = (F.x / GameConfig.BALL_WEIGHT) * GameConfig.ACCELERATION_FACTOR;
 //        acceleration.y = (F.y / GameConfig.BALL_WEIGHT) * GameConfig.ACCELERATION_FACTOR;
 //    }

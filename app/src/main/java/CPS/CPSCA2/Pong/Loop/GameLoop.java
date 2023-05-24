@@ -45,6 +45,28 @@ public class GameLoop extends Thread {
         isRunning = false;
     }
 
+    public boolean isCollision(Coordinate ballPos, Coordinate paddleStartPos, Coordinate paddleStopPos, float ballRadius) {
+        double ballX = ballPos.getX();
+        double ballY = ballPos.getY();
+        double paddleX1 = paddleStartPos.getX();
+        double paddleY1 = paddleStartPos.getY();
+        double paddleX2 = paddleStopPos.getX();
+        double paddleY2 = paddleStopPos.getY();
+
+        // Find the equation of the line that represents the paddle
+        double m = (paddleY2 - paddleY1) / (paddleX2 - paddleX1);
+        double b = paddleY1 - m * paddleX1;
+
+        // Find the y-coordinate of the line at the x-coordinate of the ball
+        double paddleY = m * ballX + b;
+
+        // Check if the ball's y-coordinate falls within the range of y-coordinates that count as a hit
+        double t = 0; // thickness of the paddle
+        double yMin = paddleY - (double) ballRadius;
+        double yMax = paddleY + (double) ballRadius + t;
+        return ballY >= yMin && ballY <= yMax;
+    }
+
     @Override
     public void run() {
         super.run();
@@ -54,11 +76,16 @@ public class GameLoop extends Thread {
                 Coordinate paddleStartPos = paddle.getStartPosition();
                 Coordinate paddleStopPos = paddle.getStopPosition();
 
+                if (isCollision(ballPos, paddleStartPos, paddleStopPos, ball.getRadius())) {
+                    ball.reverseBallVelocity();
+                }
+
                 gameView.updateBallPosition((int) ballPos.getX(), (int) ballPos.getY());
                 gameView.updatePaddlePosition((int) paddleStartPos.getX(), (int) paddleStopPos.getY(), (int) paddleStopPos.getX(), (int) paddleStopPos.getY());
 
                 ball.updatePosition(deltaT);
                 paddle.updatePosition(deltaT);
+
 
                 Thread.sleep((long) (deltaT * 1000));
             } catch (Exception e) {
