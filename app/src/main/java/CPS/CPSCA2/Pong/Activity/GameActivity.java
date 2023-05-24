@@ -26,7 +26,7 @@ public class GameActivity extends AppCompatActivity {
 
         gameView = (GameView) findViewById(R.id.game_view);
         Pair<Integer, Integer> screen = new Pair<>(displayMetrics.widthPixels, displayMetrics.heightPixels);
-        gameLoop = new GameLoop(gameView, 16, screen);
+        gameLoop = new GameLoop(gameView, (float) 0.016, screen);
         System.out.println("before start");
         gameLoop.start();
 

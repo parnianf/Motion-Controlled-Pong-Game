@@ -1,7 +1,6 @@
 package CPS.CPSCA2.Pong.Domain;
 
 import android.util.Pair;
-import android.widget.ImageView;
 
 import java.lang.Math;
 
@@ -29,23 +28,30 @@ public class Ball {
         return position;
     }
 
-    public void setNextPosition(double deltaT) {
-        position = getNextPosition(deltaT);
+
+    public void updatePosition(double deltaT) {
+        float new_x = (float) ((0.5 * acceleration.x * Math.pow(deltaT, 2)) + (velocity.x * deltaT) + position.x);
+        float new_y = (float) ((0.5 * acceleration.y * Math.pow(deltaT, 2)) + (velocity.y * deltaT) + position.y);
+
+        position = new Coordinate(new_x, new_y, position.z);
+        updateVelocity(deltaT);
+        handleBoundaryCollisions();
+
     }
 
-    private Coordinate getNextPosition(double deltaT) {
-        Coordinate amountToAdd1 = acceleration.multiplyVectorByNum(0.5 * (Math.pow(deltaT, 2)));
-        Coordinate amountToAdd2 = velocity.multiplyVectorByNum(deltaT);
-        amountToAdd1.vectorAddition(amountToAdd2);
-        return new Coordinate(position.x + amountToAdd1.x,
-                position.y + amountToAdd1.y,
-                position.z + amountToAdd1.z);
+    private void handleBoundaryCollisions() {
+        if ((position.x + radius) >= displayWidth || (position.x - radius) <= 0) {
+            velocity.x = -velocity.x;
+        }
+        if ((position.y + radius) >= displayHeight || (position.y - radius) <= 0) {
+            velocity.y = -velocity.y;
+        }
     }
 
     private void updateVelocity(double deltaT) {
-        Coordinate amountToAdd = acceleration.multiplyVectorByNum(deltaT);
-        velocity.vectorAddition(amountToAdd);
+        velocity.y += acceleration.y * deltaT;
     }
+
 
 //    private void updateAcceleration(Coordinate F) {
 //        acceleration.x = (F.x / GameConfig.BALL_WEIGHT) * GameConfig.ACCELERATION_FACTOR;

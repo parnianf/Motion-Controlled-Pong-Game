@@ -4,7 +4,8 @@ package CPS.CPSCA2.Pong.Domain;
 import android.util.Pair;
 
 public class Paddle {
-    private Coordinate position;
+    private Coordinate startPosition;
+    private Coordinate stopPosition;
     private Coordinate velocity;
     private Coordinate acceleration;
     private Coordinate theta;
@@ -13,9 +14,10 @@ public class Paddle {
 
     private float width, height;
 
-    public Paddle(Coordinate x, Coordinate v, Coordinate a,
-                Pair<Integer, Integer> displaySize, int width, int height) {
-        this.position = x;
+    public Paddle(Coordinate startPosition, Coordinate stopPosition, Coordinate v, Coordinate a,
+                  Pair<Integer, Integer> displaySize, int width, int height) {
+        this.startPosition = startPosition;
+        this.stopPosition = stopPosition;
         this.velocity = v;
         this.acceleration = a;
         this.theta = new Coordinate(0, 0, 0);
@@ -25,26 +27,33 @@ public class Paddle {
         this.height = height;
     }
 
-    public void setNextPosition(double deltaT) {
-        position = getNextPosition(deltaT);
+//    public void setNextPosition(double deltaT) {
+//        position = getNextPosition(deltaT);
+//    }
+
+    public Coordinate getStartPosition() {
+        return startPosition;
     }
 
-    public Coordinate getPosition() {
-        return position;
+    public Coordinate getStopPosition() {
+        return stopPosition;
     }
 
-    private Coordinate getNextPosition(double deltaT) {
-        Coordinate amountToAdd1 = acceleration.multiplyVectorByNum(0.5 * (Math.pow(deltaT, 2)));
-        Coordinate amountToAdd2 = velocity.multiplyVectorByNum(deltaT);
-        amountToAdd1.vectorAddition(amountToAdd2);
-        return new Coordinate((position.x + amountToAdd1.x) % displayWidth,
-                position.y + amountToAdd1.y,
-                position.z + amountToAdd1.z);
+    public void updatePosition(double deltaT) {
+        float newStartX = (float) ((0.5 * acceleration.x * Math.pow(deltaT, 2)) + (velocity.x * deltaT) + startPosition.x);
+        float newStartY = (float) ((0.5 * acceleration.y * Math.pow(deltaT, 2)) + (velocity.y * deltaT) + startPosition.y);
+
+        float newStopX = (float) ((0.5 * acceleration.x * Math.pow(deltaT, 2)) + (velocity.x * deltaT) + stopPosition.x);
+        float newStopY = (float) ((0.5 * acceleration.y * Math.pow(deltaT, 2)) + (velocity.y * deltaT) + stopPosition.y);
+
+        startPosition = new Coordinate(newStartX, newStartY, startPosition.getZ());
+        stopPosition = new Coordinate(newStopX, newStopY, stopPosition.getZ());
+
     }
 
-    private void updateVelocity(double deltaT) {
-        Coordinate amountToAdd = acceleration.multiplyVectorByNum(deltaT);
-        velocity.vectorAddition(amountToAdd);
-    }
+//    private void updateVelocity(double deltaT) {
+//        Coordinate amountToAdd = acceleration.multiplyVectorByNum(deltaT);
+//        velocity.vectorAddition(amountToAdd);
+//    }
 
 }
