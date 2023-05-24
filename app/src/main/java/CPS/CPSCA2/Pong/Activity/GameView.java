@@ -10,7 +10,6 @@ import android.util.AttributeSet;
 import android.view.View;
 
 public class GameView extends View {
-
     private Bitmap mBitmap;
     private Canvas mCanvas;
     private Path mPath;
@@ -18,8 +17,7 @@ public class GameView extends View {
     private Paint mPaint;
 
     int ballX = 0, ballY = 0;
-    int paddleX, paddleY, paddleWidth, paddleHeight;
-
+    int paddleStartX, paddleStartY, paddleStopX, paddleStopY;
 
 
     public GameView(Context context, AttributeSet attrs) {
@@ -42,8 +40,7 @@ public class GameView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         canvas.drawCircle(ballX, ballY, 50, mPaint);
-        canvas.drawRect(paddleX-Integer.parseInt(String.valueOf(paddleWidth/2)), paddleY-Integer.parseInt(String.valueOf(paddleHeight/2)), paddleX+Integer.parseInt(String.valueOf(paddleWidth/2)), paddleY+Integer.parseInt(String.valueOf(paddleHeight/2)), mPaint);
-//        canvas.drawRect(50,50,100,100, mPaint);
+        canvas.drawLine(paddleStartX, paddleStartY, paddleStopX, paddleStopY, mPaint);
     }
 
     public void updateBallPosition(int x, int y) {
@@ -52,11 +49,11 @@ public class GameView extends View {
         invalidate();
     }
 
-    public void updatePaddlePosition(int paddleX, int paddleY, int paddleWidth, int paddleHeight) {
-        this.paddleX = paddleX;
-        this.paddleY = paddleY;
-        this.paddleWidth = paddleWidth;
-        this.paddleHeight  =paddleHeight;
+    public void updatePaddlePosition(int paddleStartX, int paddleStartY, int paddleStopX, int paddleStopY) {
+        this.paddleStartX = paddleStartX;
+        this.paddleStartY = paddleStartY;
+        this.paddleStopX = paddleStopX;
+        this.paddleStopY = paddleStopY;
         invalidate();
     }
 }
