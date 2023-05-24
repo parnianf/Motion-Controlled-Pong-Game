@@ -61,7 +61,7 @@ public class GameLoop extends Thread {
         double paddleY = m * ballX + b;
 
         // Check if the ball's y-coordinate falls within the range of y-coordinates that count as a hit
-        double t = 0; // thickness of the paddle
+        double t = 10; // thickness of the paddle
         double yMin = paddleY - (double) ballRadius;
         double yMax = paddleY + (double) ballRadius + t;
         return ballY >= yMin && ballY <= yMax;
