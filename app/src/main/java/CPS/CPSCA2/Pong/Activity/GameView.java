@@ -24,7 +24,8 @@ public class GameView extends View {
         super(context, attrs);
         this.context = context;
         mPaint = new Paint();
-        mPaint.setColor(Color.parseColor("purple"));
+        mPaint.setColor(Color.parseColor("white"));
+        mPaint.setStrokeWidth(20);
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setAntiAlias(true);
     }

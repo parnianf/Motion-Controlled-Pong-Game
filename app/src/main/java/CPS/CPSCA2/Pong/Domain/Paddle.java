@@ -51,6 +51,13 @@ public class Paddle {
 
     }
 
+    public void setAcceleration(float ax) {
+
+
+
+        acceleration.x = ax;
+    }
+
 //    private void updateVelocity(double deltaT) {
 //        Coordinate amountToAdd = acceleration.multiplyVectorByNum(deltaT);
 //        velocity.vectorAddition(amountToAdd);
