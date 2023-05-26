@@ -44,14 +44,31 @@ public class Paddle {
     }
 
     public void updatePosition(double deltaT) {
-        float delta_x = (float) ((length / 2) * Math.cos(theta));
-        float delta_y = (float) ((length / 2) * Math.sin(theta));
+        float delta_x = (float) Math.abs((length / 2) * Math.cos(theta));
+        float delta_y = (float) Math.abs((length / 2) * Math.sin(theta));
 
-        float newStartX = (float) ((0.5 * acceleration.x * Math.pow(deltaT, 2)) + (velocity.x * deltaT) + startPosition.x) + length/2 - delta_x;
-        float newStartY = (float) ((0.5 * acceleration.y * Math.pow(deltaT, 2)) + (velocity.y * deltaT) + startPosition.y) - delta_y;
+        float len2 = (float) (Math.abs(stopPosition.x - startPosition.x) / 2);
+        float centerX = (float) (startPosition.x + len2);
+        float centerY = (float) ((float)displayHeight * 3.0 / 4.0);
 
-        float newStopX = (float) ((0.5 * acceleration.x * Math.pow(deltaT, 2)) + (velocity.x * deltaT) + stopPosition.x) - length/2 + delta_x;
-        float newStopY = (float) ((0.5 * acceleration.y * Math.pow(deltaT, 2)) + (velocity.y * deltaT) + stopPosition.y) + delta_y;
+        float newCenterX = (float) ((0.5 * acceleration.x * Math.pow(deltaT, 2)) + (velocity.x * deltaT) + centerX);
+        float newCenterY = centerY;
+
+        float newStartY = newCenterY + delta_y;
+        float newStopY = newCenterY - delta_y;
+
+        float newStartX = newCenterX - delta_x;
+        float newStopX = newCenterX + delta_x;
+
+        System.out.println("theta: " + theta + " centerX: " + centerX + " newCenterY: " + newCenterY + " newStartY: " + newStartY + " newStopY: " + newStopY + " newStartX: " + newStartX + " newStopX: " + newStopX);
+
+
+//
+//        float newStartX = (float) ((0.5 * acceleration.x * Math.pow(deltaT, 2)) + (velocity.x * deltaT) + startPosition.x) - length/2 + delta_x;
+//        float newStartY = (float) ((0.5 * acceleration.y * Math.pow(deltaT, 2)) + (velocity.y * deltaT) + startPosition.y) - delta_y;
+//
+//        float newStopX = (float) ((0.5 * acceleration.x * Math.pow(deltaT, 2)) + (velocity.x * deltaT) + stopPosition.x) + length/2 - delta_x;
+//        float newStopY = (float) ((0.5 * acceleration.y * Math.pow(deltaT, 2)) + (velocity.y * deltaT) + stopPosition.y) + delta_y;
 
         startPosition = new Coordinate(newStartX, newStartY, startPosition.getZ());
         stopPosition = new Coordinate(newStopX, newStopY, stopPosition.getZ());
