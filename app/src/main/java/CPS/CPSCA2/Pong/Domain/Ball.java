@@ -44,12 +44,30 @@ public class Ball {
         velocity.x += acceleration.x * deltaT;
     }
 
+//    public void handlePaddleCollisions(float theta) {
+//        acceleration.y = 1000 * Math.cos(theta);
+//        acceleration.x = 1000 * Math.sin(theta);
+//        float vx = (float) velocity.x;
+//        velocity.x = (float) (vx * Math.cos(2 * theta) + velocity.y * Math.sin(2 * theta));
+//        velocity.y = (float) (-vx * Math.sin(2 * theta) - velocity.y * Math.cos(2 * theta));
+//    }
+
     public void handlePaddleCollisions(float theta) {
-        acceleration.y = 1000 * Math.cos(theta);
-        acceleration.x = 1000 * Math.sin(theta);
-        float vx = (float) velocity.x;
-        velocity.x = (float) (vx * Math.cos(2 * theta) + velocity.y * Math.sin(2 * theta));
-        velocity.y = (float) (-vx * Math.sin(2 * theta) - velocity.y * Math.cos(2 * theta));
+        // Calculate the angle between the ball's velocity and the paddle's surface
+        float collisionAngle = theta - (float) Math.atan2(velocity.y, velocity.x);
+
+        // Calculate the new x and y components of the ball's velocity after collision
+        float newVelX = (float) (Math.cos(collisionAngle) * Math.sqrt(velocity.x * velocity.x + velocity.y * velocity.y));
+        float newVelY = (float) (Math.sin(collisionAngle) * Math.sqrt(velocity.x * velocity.x + velocity.y * velocity.y));
+
+        // Update the ball's velocity with the corrected values
+        velocity.x = newVelX;
+        velocity.y = newVelY;
+
+        // Reverse the ball's x velocity
+//        velocity.x = -velocity.x;
+
+//        System.out.println("speed: " + Math.sqrt(velocity.x * velocity.x + velocity.y * velocity.y));
     }
 
     private void handleBoundaryCollisions() {

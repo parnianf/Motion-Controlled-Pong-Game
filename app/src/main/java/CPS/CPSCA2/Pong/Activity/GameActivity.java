@@ -65,25 +65,19 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-//        System.out.println("SENSOR CHANGED");
         if (event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
             // Obtain the screen density in pixels per inch
             DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
             float density = displayMetrics.density * 7000; // 160f is the standard DPI of a medium-density screen
-
-// Convert meters to pixels using the density
-            float meters = event.values[0]; // Example length in meters
+            // Convert meters to pixels using the density
+            float meters = event.values[0];
             float pixels = meters * density;
-
             gameLoop.updatePaddleXAcceleration(pixels);
             gameLoop.updatePaddlePositionByAccelerometer();
-//            System.out.println("acc : " + Arrays.toString(event.values));
         } else if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
             float angularVelocityZ = event.values[2];
-            System.out.println("ANGULAR Velocity: " + angularVelocityZ);
-            gameLoop.updatePaddleAngularVelocity(angularVelocityZ); //TODO: density?
+            gameLoop.updatePaddleAngularVelocity(angularVelocityZ);
             gameLoop.updatePaddlePositionByGyroscope();
-//            System.out.println("GYRO : " + Arrays.toString(event.values));
         }
     }
 

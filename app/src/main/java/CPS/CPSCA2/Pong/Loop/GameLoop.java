@@ -100,11 +100,11 @@ public class GameLoop extends Thread {
         double paddleY = m * ballX + b;
 
         // Check if the ball's y-coordinate falls within the range of y-coordinates that count as a hit
-        double t = 100; // thickness of the paddle
-        double yMin = paddleY - (double) ballRadius;
+        double t = 50; // thickness of the paddle
+        double yMin = paddleY - (double) ballRadius - t;
         double yMax = paddleY + (double) ballRadius + t;
-        return ballY >= yMin && ballY <= yMax &&
-                ballX >= paddleX1 && ballX <= paddleX2;
+        return ballY > yMin && ballY < yMax &&
+                ballX > (paddleX1-ballRadius - t) && ballX < (paddleX2+ballRadius + t);
     }
 
     public void updatePaddleXAcceleration(float ax) {
@@ -133,16 +133,17 @@ public class GameLoop extends Thread {
                 Coordinate paddleStopPos = paddle.getStopPosition();
 
 
-                if (distanceToLineSegment((float) paddleStartPos.x, (float) paddleStartPos.y, //collision darim
-                        (float) paddleStopPos.x, (float) paddleStopPos.y,
-                        (float) ballPos.x, (float) ballPos.y, ball.getRadius()) < 30) {  // TODO: 30 or 0??
-//                    ball.reverseBallVelocity();
-                    ball.handlePaddleCollisions(paddle.getTheta());
-                }
+//                if (distanceToLineSegment((float) paddleStartPos.x, (float) paddleStartPos.y, //collision darim
+//                        (float) paddleStopPos.x, (float) paddleStopPos.y,
+//                        (float) ballPos.x, (float) ballPos.y, ball.getRadius()) < 30) {  // TODO: 30 or 0??
+////                    ball.reverseBallVelocity();
+//                    ball.handlePaddleCollisions(paddle.getTheta());
+//                }
 
-//                    if (isCollision(ballPos, paddleStartPos, paddleStopPos, ball.getRadius())) {
+                    if (isCollision(ballPos, paddleStartPos, paddleStopPos, ball.getRadius())) {
 //                        ball.reverseBallVelocity();
-//                    }
+                        ball.handlePaddleCollisions(paddle.getTheta());
+                    }
                 else {
 
                     gameView.updateBallPosition((int) ballPos.getX(), (int) ballPos.getY());
