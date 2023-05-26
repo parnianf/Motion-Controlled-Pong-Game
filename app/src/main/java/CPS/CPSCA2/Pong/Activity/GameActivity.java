@@ -78,6 +78,9 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
             gameLoop.updatePaddleXAcceleration(pixels);
 //            System.out.println("acc : " + Arrays.toString(event.values));
         } else if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
+            float angularVelocityZ = event.values[2];
+            System.out.println("ANGULAR Velocity: " + angularVelocityZ);
+            gameLoop.updatePaddleAngularVelocity(angularVelocityZ); //TODO: density?
 //            System.out.println("GYRO : " + Arrays.toString(event.values));
         }
     }

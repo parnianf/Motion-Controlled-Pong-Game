@@ -39,6 +39,13 @@ public class Ball {
 
     }
 
+    public void handlePaddleCollisions(float theta) {
+        float new_vx = (float) (velocity.x * Math.cos(2 * theta) + velocity.y * Math.sin(2 * theta));
+        float new_vy = (float) (- velocity.x * Math.sin(2 * theta) - velocity.y * Math.cos(2 * theta));
+        velocity.x = new_vx;
+        velocity.y = new_vy;
+    }
+
     private void handleBoundaryCollisions() {
         if ((position.x + radius) >= displayWidth || (position.x - radius) <= 0) {
             velocity.x = -velocity.x;
