@@ -133,10 +133,11 @@ public class GameLoop extends Thread {
                 Coordinate paddleStopPos = paddle.getStopPosition();
 
 
-                if (distanceToLineSegment((float) paddleStartPos.x, (float) paddleStartPos.y,
+                if (distanceToLineSegment((float) paddleStartPos.x, (float) paddleStartPos.y, //collision darim
                         (float) paddleStopPos.x, (float) paddleStopPos.y,
                         (float) ballPos.x, (float) ballPos.y, ball.getRadius()) < 30) {  // TODO: 30 or 0??
-                    ball.reverseBallVelocity();
+//                    ball.reverseBallVelocity();
+                    ball.handlePaddleCollisions(paddle.getTheta());
                 }
 
 //                    if (isCollision(ballPos, paddleStartPos, paddleStopPos, ball.getRadius())) {

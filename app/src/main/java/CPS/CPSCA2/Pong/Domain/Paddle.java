@@ -79,6 +79,7 @@ public class Paddle {
         theta += angularVelocityZ * deltaT;
     }
 
+    public float getTheta(){return theta;}
 
 
 //    private void updateVelocity(double deltaT) {

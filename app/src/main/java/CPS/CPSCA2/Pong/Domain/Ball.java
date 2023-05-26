@@ -39,11 +39,17 @@ public class Ball {
 
     }
 
+    private void updateVelocity(double deltaT) {
+        velocity.y += acceleration.y * deltaT;
+        velocity.x += acceleration.x * deltaT;
+    }
+
     public void handlePaddleCollisions(float theta) {
-        float new_vx = (float) (velocity.x * Math.cos(2 * theta) + velocity.y * Math.sin(2 * theta));
-        float new_vy = (float) (- velocity.x * Math.sin(2 * theta) - velocity.y * Math.cos(2 * theta));
-        velocity.x = new_vx;
-        velocity.y = new_vy;
+        acceleration.y = 1000 * Math.cos(theta);
+        acceleration.x = 1000 * Math.sin(theta);
+        float vx = (float) velocity.x;
+        velocity.x = (float) (vx * Math.cos(2 * theta) + velocity.y * Math.sin(2 * theta));
+        velocity.y = (float) (-vx * Math.sin(2 * theta) - velocity.y * Math.cos(2 * theta));
     }
 
     private void handleBoundaryCollisions() {
@@ -53,10 +59,6 @@ public class Ball {
         if ((position.y + radius) >= displayHeight || (position.y - radius) <= 0) {
             velocity.y = -velocity.y;
         }
-    }
-
-    private void updateVelocity(double deltaT) {
-        velocity.y += acceleration.y * deltaT;
     }
 
     public void reverseBallVelocity() {
