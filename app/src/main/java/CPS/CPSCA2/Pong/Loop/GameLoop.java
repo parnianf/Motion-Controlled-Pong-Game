@@ -115,6 +115,14 @@ public class GameLoop extends Thread {
         paddle.setTheta(angularVelocityZ, deltaT);
     }
 
+    public void updatePaddlePositionByAccelerometer(){
+        paddle.handlePositionByAccelerometer(deltaT);
+    }
+
+    public void updatePaddlePositionByGyroscope(){
+        paddle.handlePositionByGyroscope();
+    }
+
     @Override
     public void run() {
         super.run();
@@ -137,11 +145,11 @@ public class GameLoop extends Thread {
                 else {
 
                     gameView.updateBallPosition((int) ballPos.getX(), (int) ballPos.getY());
-                    gameView.updatePaddlePosition((int) paddleStartPos.getX(), (int) paddleStopPos.getY(), (int) paddleStopPos.getX(), (int) paddleStopPos.getY());
+                    gameView.updatePaddlePosition((int) paddleStartPos.getX(), (int) paddleStartPos.getY(), (int) paddleStopPos.getX(), (int) paddleStopPos.getY());
 
                 }
                 ball.updatePosition(deltaT);
-                paddle.updatePosition(deltaT);
+//                paddle.updatePosition(deltaT);
 
 
                 Thread.sleep((long) (deltaT * 1000));

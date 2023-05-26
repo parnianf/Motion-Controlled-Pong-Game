@@ -16,6 +16,7 @@ public class Paddle {
     private float theta;
 
     private float length;
+    private float centerX, centerY;
 
     public Paddle(Coordinate startPosition, Coordinate stopPosition, Coordinate v, Coordinate a,
                   Pair<Integer, Integer> displaySize, int width, int height) {
@@ -29,6 +30,8 @@ public class Paddle {
         this.width = width;
         this.height = height;
         this.length = (float) Math.abs(startPosition.x - stopPosition.x);
+        this.centerX = (float) (startPosition.x + this.length/2);
+        this.centerY = (float) startPosition.y;
     }
 
 //    public void setNextPosition(double deltaT) {
@@ -43,38 +46,29 @@ public class Paddle {
         return stopPosition;
     }
 
-    public void updatePosition(double deltaT) {
-        float delta_x = (float) Math.abs((length / 2) * Math.cos(theta));
-        float delta_y = (float) Math.abs((length / 2) * Math.sin(theta));
+    public void handlePositionByAccelerometer(double deltaT){
+        centerX += (float) ((0.5 * acceleration.x * Math.pow(deltaT, 2)) + (velocity.x * deltaT));
+        float newStartX = centerX - length/2;
+        float newStopX = centerX + length/2;
+        setPosition(newStartX, (float) startPosition.y, newStopX, (float) stopPosition.y);
+    }
 
-        float len2 = (float) (Math.abs(stopPosition.x - startPosition.x) / 2);
-        float centerX = (float) (startPosition.x + len2);
-        float centerY = (float) ((float)displayHeight * 3.0 / 4.0);
+    public void handlePositionByGyroscope() {
+        float delta_x = (float) ((length / 2) * Math.cos(theta));
+        float delta_y = (float) ((length / 2) * Math.sin(theta));
 
-        float newCenterX = (float) ((0.5 * acceleration.x * Math.pow(deltaT, 2)) + (velocity.x * deltaT) + centerX);
-        float newCenterY = centerY;
+        float newStartY = centerY + delta_y;
+        float newStopY = centerY - delta_y;
 
-        float newStartY = newCenterY + delta_y;
-        float newStopY = newCenterY - delta_y;
-
-        float newStartX = newCenterX - delta_x;
-        float newStopX = newCenterX + delta_x;
-
-        System.out.println("theta: " + theta + " centerX: " + centerX + " newCenterY: " + newCenterY + " newStartY: " + newStartY + " newStopY: " + newStopY + " newStartX: " + newStartX + " newStopX: " + newStopX);
+        float newStartX = centerX - delta_x;
+        float newStopX = centerX + delta_x;
+        setPosition(newStartX, newStartY, newStopX, newStopY);
+    }
 
 
-//
-//        float newStartX = (float) ((0.5 * acceleration.x * Math.pow(deltaT, 2)) + (velocity.x * deltaT) + startPosition.x) - length/2 + delta_x;
-//        float newStartY = (float) ((0.5 * acceleration.y * Math.pow(deltaT, 2)) + (velocity.y * deltaT) + startPosition.y) - delta_y;
-//
-//        float newStopX = (float) ((0.5 * acceleration.x * Math.pow(deltaT, 2)) + (velocity.x * deltaT) + stopPosition.x) + length/2 - delta_x;
-//        float newStopY = (float) ((0.5 * acceleration.y * Math.pow(deltaT, 2)) + (velocity.y * deltaT) + stopPosition.y) + delta_y;
-
+    public void setPosition(float newStartX, float newStartY, float newStopX, float newStopY) {
         startPosition = new Coordinate(newStartX, newStartY, startPosition.getZ());
         stopPosition = new Coordinate(newStopX, newStopY, stopPosition.getZ());
-
-//        System.out.println(startPosition);
-
     }
 
     public void setAcceleration(float ax) {
@@ -82,7 +76,7 @@ public class Paddle {
     }
 
     public void setTheta(float angularVelocityZ, float deltaT){
-        theta = angularVelocityZ * deltaT;
+        theta += angularVelocityZ * deltaT;
     }
 
 
