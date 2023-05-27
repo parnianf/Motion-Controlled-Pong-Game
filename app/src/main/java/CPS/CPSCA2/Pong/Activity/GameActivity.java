@@ -19,7 +19,8 @@ import CPS.CPSCA2.R;
 public class GameActivity extends AppCompatActivity implements SensorEventListener {
     GameView gameView;
     GameLoop gameLoop;
-
+    private long timestamp;
+    private long timestamp1;
     private SensorManager sensorManager;
     private Sensor accelerometerSensor;
     private Sensor gyroscopeSensor;
@@ -65,13 +66,17 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public void onSensorChanged(SensorEvent event) {
+        if (timestamp == 0) timestamp = event.timestamp;
+        if (timestamp1 == 0 ) timestamp1 = event.timestamp;
         if (event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
             DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
             Coordinate acceleration = new Coordinate(event.values[0] * 2 * displayMetrics.widthPixels, event.values[1] * 2 * displayMetrics.widthPixels, event.values[2] * 2 * displayMetrics.widthPixels);
-            gameLoop.updatePaddleXAcceleration(acceleration); // acc m/s^2 * 100cm/1m * widthPixels/50cm = px/s^2
+            gameLoop.updatePaddleXAcceleration(acceleration, (double) (event.timestamp - timestamp) / 1000000000);
+            timestamp = event.timestamp;// acc m/s^2 * 100cm/1m * widthPixels/50cm = px/s^2
         } else if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
             Coordinate angularVelocity = new Coordinate(event.values[0], event.values[1], event.values[2]);
-            gameLoop.updatePaddleAngularVelocity(angularVelocity);
+            gameLoop.updatePaddleAngularVelocity(angularVelocity, (double) (event.timestamp - timestamp1)/1000000000);
+            timestamp1 = event.timestamp;
         }
     }
 

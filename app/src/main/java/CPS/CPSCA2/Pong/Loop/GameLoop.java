@@ -103,13 +103,17 @@ public class GameLoop extends Thread {
                 ballX > (paddleX1 - ballRadius - t) && ballX < (paddleX2 + ballRadius + t);
     }
 
-    public void updatePaddleXAcceleration(Coordinate a) {
+    public void updatePaddleXAcceleration(Coordinate a, double deltaTime) {
+        if(Math.abs(a.x) < 20){
+            a.x = 0;
+        }
         paddle.setAcceleration(a);
-        paddle.setPaddleCenter(deltaT);
+//        this.deltaT = deltaTime;
+        paddle.setPaddleCenter(deltaTime);
     }
 
-    public void updatePaddleAngularVelocity(Coordinate angularVelocity) {
-        paddle.setTheta(angularVelocity, deltaT);
+    public void updatePaddleAngularVelocity(Coordinate angularVelocity, double deltaTime) {
+        paddle.setTheta(angularVelocity, deltaTime);
     }
 
     @Override
