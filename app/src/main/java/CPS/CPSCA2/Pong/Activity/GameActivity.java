@@ -6,17 +6,16 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.Pair;
 import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import CPS.CPSCA2.Pong.Coordinate.Coordinate;
-import CPS.CPSCA2.Pong.Logic.Normal.*;
+import CPS.CPSCA2.Pong.Domain.Coordinate;
+import CPS.CPSCA2.Pong.Loop.GameLoop;
 import CPS.CPSCA2.R;
 
-public class NormalGameActivity extends AppCompatActivity implements SensorEventListener {
+public class GameActivity extends AppCompatActivity implements SensorEventListener {
     GameView gameView;
     GameLoop gameLoop;
     private long timestamp;
@@ -38,6 +37,7 @@ public class NormalGameActivity extends AppCompatActivity implements SensorEvent
 
         gameView = (GameView) findViewById(R.id.game_view);
         Pair<Integer, Integer> screen = new Pair<>(displayMetrics.widthPixels, displayMetrics.heightPixels);
+
         String gameType = (String) getIntent().getExtras().get("game_type");
         gameLoop = new GameLoop(gameView, (float) 0.016, screen, gameType);
         gameLoop.start();
@@ -68,7 +68,7 @@ public class NormalGameActivity extends AppCompatActivity implements SensorEvent
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (timestamp == 0) timestamp = event.timestamp;
-        if (timestamp1 == 0 ) timestamp1 = event.timestamp;
+        if (timestamp1 == 0) timestamp1 = event.timestamp;
         if (event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
             DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
             Coordinate acceleration = new Coordinate(event.values[0] * 2 * displayMetrics.widthPixels, event.values[1] * 2 * displayMetrics.widthPixels, event.values[2] * 2 * displayMetrics.widthPixels);
@@ -76,7 +76,7 @@ public class NormalGameActivity extends AppCompatActivity implements SensorEvent
             timestamp = event.timestamp;// acc m/s^2 * 100cm/1m * widthPixels/50cm = px/s^2
         } else if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
             Coordinate angularVelocity = new Coordinate(event.values[0], event.values[1], event.values[2]);
-            gameLoop.updatePaddleAngularVelocity(angularVelocity, (double) (event.timestamp - timestamp1)/1000000000);
+            gameLoop.updatePaddleAngularVelocity(angularVelocity, (double) (event.timestamp - timestamp1) / 1000000000);
             timestamp1 = event.timestamp;
         }
     }

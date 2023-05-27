@@ -1,10 +1,8 @@
-package CPS.CPSCA2.Pong.Logic.Normal;
+package CPS.CPSCA2.Pong.Domain;
 
 import android.util.Pair;
 
 import java.util.Objects;
-
-import CPS.CPSCA2.Pong.Coordinate.Coordinate;
 
 public class Ball {
     private Coordinate position;
@@ -29,7 +27,7 @@ public class Ball {
         return position;
     }
 
-    public void setZAcceleration(float az){
+    public void setZAcceleration(float az) {
 
         acceleration.z = az;
     }
@@ -52,7 +50,7 @@ public class Ball {
     public void handlePaddleCollisions(Coordinate theta, float deltaT) {
         if (Objects.equals(mode, "normal")) {
             float vz = 0;
-            if(Math.abs(acceleration.z) > 20) {
+            if (Math.abs(acceleration.z) > 20) {
                 vz = Math.abs(acceleration.z) * deltaT * 2000;
             }
             float vx = (float) (velocity.x * Math.cos(2 * theta.z) - velocity.y * Math.sin(2 * theta.z));
@@ -61,8 +59,7 @@ public class Ball {
             vy += vz * (vy > 0 ? 1 : -1);
             velocity.x = vx;
             velocity.y = vy;
-        }
-        else {
+        } else {
             float vx = (float) (velocity.x * Math.cos(2 * theta.z) - velocity.y * Math.sin(2 * theta.z));
             float vy = (float) (-velocity.x * Math.sin(2 * theta.z) - velocity.y * Math.cos(2 * theta.z));
             velocity.x = vx;

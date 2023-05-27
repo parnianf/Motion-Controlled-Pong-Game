@@ -1,9 +1,7 @@
-package CPS.CPSCA2.Pong.Logic.Normal;
+package CPS.CPSCA2.Pong.Domain;
 
 
 import android.util.Pair;
-
-import CPS.CPSCA2.Pong.Coordinate.Coordinate;
 
 public class Paddle {
     private Coordinate startPosition;
@@ -63,7 +61,7 @@ public class Paddle {
 
     public void setPaddleCenter(double deltaT) {
         float acc = (float) (acceleration.x * Math.cos(theta.y) * Math.cos(theta.z) + acceleration.y * Math.sin(theta.y) * Math.sin(theta.z) + acceleration.z * Math.cos(theta.y) * Math.sin(theta.z));
-        if (acc * velocity.x < 0){
+        if (acc * velocity.x < 0) {
             acc *= 0.1;
         }
         centerX += (float) -((0.5 * acc * Math.pow(deltaT, 2)) + (velocity.x * deltaT));
@@ -100,7 +98,7 @@ public class Paddle {
     }
 
     public void setAcceleration(Coordinate a) {
-        if(Math.abs(a.x) < 20){
+        if (Math.abs(a.x) < 20) {
             acceleration.x = 0;
         } else {
             acceleration.x = (float) (acceleration.x * 0.2 + a.x * 0.8);

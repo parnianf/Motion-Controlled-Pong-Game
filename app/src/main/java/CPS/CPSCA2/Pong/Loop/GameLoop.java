@@ -1,10 +1,12 @@
-package CPS.CPSCA2.Pong.Logic.Normal;
+package CPS.CPSCA2.Pong.Loop;
 
 
 import android.util.Pair;
 
 import CPS.CPSCA2.Pong.Activity.GameView;
-import CPS.CPSCA2.Pong.Coordinate.Coordinate;
+import CPS.CPSCA2.Pong.Domain.Ball;
+import CPS.CPSCA2.Pong.Domain.Coordinate;
+import CPS.CPSCA2.Pong.Domain.Paddle;
 
 public class GameLoop extends Thread {
     private final boolean running;
@@ -28,7 +30,7 @@ public class GameLoop extends Thread {
 
     }
 
-    public void updateBallAcceleration(float az){
+    public void updateBallAcceleration(float az) {
         ball.setZAcceleration(az);
     }
 
@@ -108,7 +110,7 @@ public class GameLoop extends Thread {
     }
 
     public void updatePaddleXAcceleration(Coordinate a, double deltaTime) {
-        if(Math.abs(a.x) < 20){
+        if (Math.abs(a.x) < 20) {
             a.x = 0;
         }
         paddle.setAcceleration(a);
