@@ -55,39 +55,72 @@ public class GameLoop extends Thread {
         return (float) Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y2 - y1, 2));
     }
 
-
-    private static float distanceToLineSegment(float lineStartX, float lineStartY, float lineEndX,
-                                               float lineEndY, float circleX, float circleY, float circleRadius) {
-        // Calculate the vector from the start point of the line segment to the end point of the line segment
-        float lineVectorX = lineEndX - lineStartX;
-        float lineVectorY = lineEndY - lineStartY;
-
-        // Calculate the vector from the start point of the line segment to the center of the circle
-        float pointVectorX = circleX - lineStartX;
-        float pointVectorY = circleY - lineStartY;
-
-        // Project the point vector onto the line vector
-        float dotProduct = lineVectorX * pointVectorX + lineVectorY * pointVectorY;
-        float lineLengthSquared = lineVectorX * lineVectorX + lineVectorY * lineVectorY;
-        float t = dotProduct / lineLengthSquared;
-
-        // Check if the projection falls outside the line segment
-        if (t < 0) {
-            // The closest point is the start point of the line segment
+    public float calculateDistanceFromCircleToLineSegment(float lineStartX, float lineStartY, float lineEndX,
+                                       float lineEndY, float circleX, float circleY, float circleRadius) {
+        float lineLength = distance(lineStartX, lineStartY, lineEndX, lineEndY);
+        if (lineLength == 0f) {
+            // The line segment is just a point, so return the distance between the circle center and that point
             return distance(circleX, circleY, lineStartX, lineStartY) - circleRadius;
-        } else if (t > 1) {
-            // The closest point is the end point of the line segment
-            return distance(circleX, circleY, lineEndX, lineEndY) - circleRadius;
-        } else {
-            // Calculate the closest point on the line segment
-            float projectionX = lineStartX + t * lineVectorX;
-            float projectionY = lineStartY + t * lineVectorY;
-
-            // Calculate the distance between the circle and the closest point on the line segment
-            float distanceToLine = distance(circleX, circleY, projectionX, projectionY);
-            return distanceToLine - circleRadius;
         }
+
+        // Calculate the projection of the circle center onto the line segment
+        float t = ((circleX - lineStartX) * (lineEndX - lineStartX) +
+                (circleY - lineStartY) * (lineEndY - lineStartY)) / (lineLength * lineLength);
+        t = Math.max(0f, Math.min(1f, t)); // Clamp t to ensure it's within the line segment range
+
+        float projectionX = lineStartX + t * (lineEndX - lineStartX);
+        float projectionY = lineStartY + t * (lineEndY - lineStartY);
+
+        // Calculate the distance between the circle center and the projection point
+        float distanceToProjection = distance(circleX, circleY, projectionX, projectionY);
+
+        // Calculate the distance between the circle center and the line segment
+        float distanceToLineSegment = distanceToProjection - circleRadius;
+
+        return distanceToLineSegment;
     }
+
+    // Helper method to calculate the Euclidean distance between two points
+//    private float distance(float x1, float y1, float x2, float y2) {
+//        float dx = x2 - x1;
+//        float dy = y2 - y1;
+//        return (float) Math.sqrt(dx * dx + dy * dy);
+//    }
+
+
+
+//    private static float distanceToLineSegment(float lineStartX, float lineStartY, float lineEndX,
+//                                               float lineEndY, float circleX, float circleY, float circleRadius) {
+//        // Calculate the vector from the start point of the line segment to the end point of the line segment
+//        float lineVectorX = lineEndX - lineStartX;
+//        float lineVectorY = lineEndY - lineStartY;
+//
+//        // Calculate the vector from the start point of the line segment to the center of the circle
+//        float pointVectorX = circleX - lineStartX;
+//        float pointVectorY = circleY - lineStartY;
+//
+//        // Project the point vector onto the line vector
+//        float dotProduct = lineVectorX * pointVectorX + lineVectorY * pointVectorY;
+//        float lineLengthSquared = lineVectorX * lineVectorX + lineVectorY * lineVectorY;
+//        float t = dotProduct / lineLengthSquared;
+//
+//        // Check if the projection falls outside the line segment
+//        if (t < 0) {
+//            // The closest point is the start point of the line segment
+//            return distance(circleX, circleY, lineStartX, lineStartY) - circleRadius;
+//        } else if (t > 1) {
+//            // The closest point is the end point of the line segment
+//            return distance(circleX, circleY, lineEndX, lineEndY) - circleRadius;
+//        } else {
+//            // Calculate the closest point on the line segment
+//            float projectionX = lineStartX + t * lineVectorX;
+//            float projectionY = lineStartY + t * lineVectorY;
+//
+//            // Calculate the distance between the circle and the closest point on the line segment
+//            float distanceToLine = distance(circleX, circleY, projectionX, projectionY);
+//            return distanceToLine - circleRadius;
+//        }
+//    }
 
     public boolean isCollision(Coordinate ballPos, Coordinate paddleStartPos, Coordinate paddleStopPos, float ballRadius) {
         double ballX = ballPos.getX();
@@ -137,9 +170,9 @@ public class GameLoop extends Thread {
                 Coordinate paddleStopPos = paddle.getStopPosition();
 
 
-                if (distanceToLineSegment((float) paddleStartPos.x, (float) paddleStartPos.y, //collision darim
+                if (calculateDistanceFromCircleToLineSegment((float) paddleStartPos.x, (float) paddleStartPos.y, //collision darim
                         (float) paddleStopPos.x, (float) paddleStopPos.y,
-                        (float) ballPos.x, (float) ballPos.y, ball.getRadius()) < 30) {  // TODO: 30 or 0??
+                        (float) ballPos.x, (float) ballPos.y, ball.getRadius()) < ball.getRadius() + 20) {  // TODO: 30 or 0??
 //                    ball.reverseBallVelocity();
                     if(!isCollision) {
                         isCollision = true;
