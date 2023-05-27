@@ -11,8 +11,6 @@ import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.Arrays;
-
 import CPS.CPSCA2.Pong.Loop.GameLoop;
 import CPS.CPSCA2.R;
 

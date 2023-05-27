@@ -1,8 +1,6 @@
 package CPS.CPSCA2.Pong.Domain;
 
 
-import android.os.Debug;
-import android.util.Log;
 import android.util.Pair;
 
 public class Paddle {
@@ -10,13 +8,10 @@ public class Paddle {
     private Coordinate stopPosition;
     private Coordinate velocity;
     private Coordinate acceleration;
-//    private Coordinate theta;
     private int displayWidth;
     private int displayHeight;
-
     private float width, height;
     private float theta;
-
     private float length;
     private float centerX, centerY;
 
@@ -26,13 +21,12 @@ public class Paddle {
         this.stopPosition = stopPosition;
         this.velocity = v;
         this.acceleration = a;
-//        this.theta = new Coordinate(0, 0, 0);
         this.displayWidth = displaySize.first;
         this.displayHeight = displaySize.second;
         this.width = width;
         this.height = height;
         this.length = (float) Math.abs(startPosition.x - stopPosition.x);
-        this.centerX = (float) (startPosition.x + this.length/2);
+        this.centerX = (float) (startPosition.x + this.length / 2);
         this.centerY = (float) startPosition.y;
     }
 
@@ -40,16 +34,11 @@ public class Paddle {
         if (centerX > displayWidth) {
             centerX = displayWidth;
             velocity.x = 0;
-        }
-        else if(centerX < 0){
+        } else if (centerX < 0) {
             centerX = 0;
             velocity.x = 0;
         }
     }
-
-//    public void setNextPosition(double deltaT) {
-//        position = getNextPosition(deltaT);
-//    }
 
     public Coordinate getStartPosition() {
         return startPosition;
@@ -59,20 +48,12 @@ public class Paddle {
         return stopPosition;
     }
 
-//    public void handlePositionByAccelerometer(double deltaT){
-//        centerX += (float) ((0.5 * acceleration.x * Math.pow(deltaT, 2)) + (velocity.x * deltaT));
-//        float newStartX = (float) (centerX - length/2 * Math.cos(theta));
-//        Log.i("speed", String.valueOf(velocity.x));
-//        float newStopX = (float) (centerX + length/2 * Math.cos(theta));
-//        setPosition(newStartX, (float) startPosition.y, newStopX, (float) stopPosition.y);
-//    }
-
-    public void setPaddleCenter(float deltaT){
+    public void setPaddleCenter(float deltaT) {
         centerX += (float) ((0.5 * acceleration.x * Math.pow(deltaT, 2)) + (velocity.x * deltaT));
         updateVelocity(deltaT);
     }
 
-    public void updatePosition(float deltaT) {
+    public void updatePosition() {
         float delta_x = (float) ((length / 2) * Math.cos(theta));
         float delta_y = (float) ((length / 2) * Math.sin(theta));
 
@@ -89,10 +70,10 @@ public class Paddle {
         velocity.x += acceleration.x * deltaT;
         float velocityAsb = (float) Math.abs(velocity.x);
         int sign = velocity.x > 0 ? 1 : -1;
-        if ((velocityAsb - 2 * deltaT <= 0) || Math.abs(acceleration.x) < 100){
+        if ((velocityAsb - 2 * deltaT <= 0) || Math.abs(acceleration.x) < 100) {
             velocity.x = 0;
         } else {
-            velocity.x = (velocityAsb - (2 * deltaT)) * sign;
+            velocity.x = (float) ((velocityAsb - (2 * deltaT)) * sign);
         }
 //        Log.i("velocity", String.valueOf(velocity.x));
 //        Log.i("acceleration", String.valueOf(acceleration.x));
@@ -107,15 +88,12 @@ public class Paddle {
         acceleration.x = ax;
     }
 
-    public void setTheta(float angularVelocityZ, float deltaT){
+    public void setTheta(float angularVelocityZ, float deltaT) {
         theta += angularVelocityZ * deltaT;
     }
 
-    public float getTheta(){return theta;}
-
-//    private void updateVelocity(double deltaT) {
-//        Coordinate amountToAdd = acceleration.multiplyVectorByNum(deltaT);
-//        velocity.vectorAddition(amountToAdd);
-//    }
+    public float getTheta() {
+        return theta;
+    }
 
 }

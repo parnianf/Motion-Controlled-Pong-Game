@@ -1,9 +1,9 @@
 package CPS.CPSCA2.Pong.Activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import CPS.CPSCA2.R;
 

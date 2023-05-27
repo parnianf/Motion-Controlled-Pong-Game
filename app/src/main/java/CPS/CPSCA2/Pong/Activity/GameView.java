@@ -79,8 +79,13 @@ public class GameView extends View {
         return true; // Return true to indicate that we've handled the event
     }
 
-    public boolean getRestart() {return restart;}
-    public void setRestart(boolean restart_) {restart = restart_;}
+    public boolean getRestart() {
+        return restart;
+    }
+
+    public void setRestart(boolean restart_) {
+        restart = restart_;
+    }
 
     private boolean isTouchOnLine(float touchX, float touchY) {
         // Calculate the distance from the touch point to the line using line equation

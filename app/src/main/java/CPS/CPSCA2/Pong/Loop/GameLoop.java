@@ -28,7 +28,7 @@ public class GameLoop extends Thread {
 
     }
 
-    public void initiateGame(){
+    public void initiateGame() {
         ball = new Ball(
                 new Coordinate(Integer.parseInt(String.valueOf(screen.first / 2)), 10, 0),
                 new Coordinate(0, 0, 0),
@@ -44,7 +44,7 @@ public class GameLoop extends Thread {
                 new Coordinate(paddleStartPositionX, paddlePositionY, 0),
                 new Coordinate(paddleStopPositionX, paddlePositionY, 0),
                 new Coordinate(0, 0, 0),
-                new Coordinate(0.1, 0, 0), screen, 400, 200);
+                new Coordinate((float) 0.1, 0, 0), screen, 400, 200);
     }
 
     public void endLoop() {
@@ -56,7 +56,7 @@ public class GameLoop extends Thread {
     }
 
     public float calculateDistanceFromCircleToLineSegment(float lineStartX, float lineStartY, float lineEndX,
-                                       float lineEndY, float circleX, float circleY, float circleRadius) {
+                                                          float lineEndY, float circleX, float circleY, float circleRadius) {
         float lineLength = distance(lineStartX, lineStartY, lineEndX, lineEndY);
         if (lineLength == 0f) {
             // The line segment is just a point, so return the distance between the circle center and that point
@@ -80,69 +80,27 @@ public class GameLoop extends Thread {
         return distanceToLineSegment;
     }
 
-    // Helper method to calculate the Euclidean distance between two points
-//    private float distance(float x1, float y1, float x2, float y2) {
-//        float dx = x2 - x1;
-//        float dy = y2 - y1;
-//        return (float) Math.sqrt(dx * dx + dy * dy);
-//    }
-
-
-
-//    private static float distanceToLineSegment(float lineStartX, float lineStartY, float lineEndX,
-//                                               float lineEndY, float circleX, float circleY, float circleRadius) {
-//        // Calculate the vector from the start point of the line segment to the end point of the line segment
-//        float lineVectorX = lineEndX - lineStartX;
-//        float lineVectorY = lineEndY - lineStartY;
-//
-//        // Calculate the vector from the start point of the line segment to the center of the circle
-//        float pointVectorX = circleX - lineStartX;
-//        float pointVectorY = circleY - lineStartY;
-//
-//        // Project the point vector onto the line vector
-//        float dotProduct = lineVectorX * pointVectorX + lineVectorY * pointVectorY;
-//        float lineLengthSquared = lineVectorX * lineVectorX + lineVectorY * lineVectorY;
-//        float t = dotProduct / lineLengthSquared;
-//
-//        // Check if the projection falls outside the line segment
-//        if (t < 0) {
-//            // The closest point is the start point of the line segment
-//            return distance(circleX, circleY, lineStartX, lineStartY) - circleRadius;
-//        } else if (t > 1) {
-//            // The closest point is the end point of the line segment
-//            return distance(circleX, circleY, lineEndX, lineEndY) - circleRadius;
-//        } else {
-//            // Calculate the closest point on the line segment
-//            float projectionX = lineStartX + t * lineVectorX;
-//            float projectionY = lineStartY + t * lineVectorY;
-//
-//            // Calculate the distance between the circle and the closest point on the line segment
-//            float distanceToLine = distance(circleX, circleY, projectionX, projectionY);
-//            return distanceToLine - circleRadius;
-//        }
-//    }
-
     public boolean isCollision(Coordinate ballPos, Coordinate paddleStartPos, Coordinate paddleStopPos, float ballRadius) {
-        double ballX = ballPos.getX();
-        double ballY = ballPos.getY();
-        double paddleX1 = paddleStartPos.getX();
-        double paddleY1 = paddleStartPos.getY();
-        double paddleX2 = paddleStopPos.getX();
-        double paddleY2 = paddleStopPos.getY();
+        float ballX = ballPos.getX();
+        float ballY = ballPos.getY();
+        float paddleX1 = paddleStartPos.getX();
+        float paddleY1 = paddleStartPos.getY();
+        float paddleX2 = paddleStopPos.getX();
+        float paddleY2 = paddleStopPos.getY();
 
         // Find the equation of the line that represents the paddle
-        double m = (paddleY2 - paddleY1) / (paddleX2 - paddleX1);
-        double b = paddleY1 - m * paddleX1;
+        float m = (paddleY2 - paddleY1) / (paddleX2 - paddleX1);
+        float b = paddleY1 - m * paddleX1;
 
         // Find the y-coordinate of the line at the x-coordinate of the ball
-        double paddleY = m * ballX + b;
+        float paddleY = m * ballX + b;
 
         // Check if the ball's y-coordinate falls within the range of y-coordinates that count as a hit
-        double t = 50; // thickness of the paddle
-        double yMin = paddleY - (double) ballRadius - t;
-        double yMax = paddleY + (double) ballRadius + t;
+        float t = 50; // thickness of the paddle
+        float yMin = paddleY - ballRadius - t;
+        float yMax = paddleY + ballRadius + t;
         return ballY > yMin && ballY < yMax &&
-                ballX > (paddleX1-ballRadius - t) && ballX < (paddleX2+ballRadius + t);
+                ballX > (paddleX1 - ballRadius - t) && ballX < (paddleX2 + ballRadius + t);
     }
 
     public void updatePaddleXAcceleration(float ax) {
@@ -150,7 +108,7 @@ public class GameLoop extends Thread {
         paddle.setPaddleCenter(deltaT);
     }
 
-    public void updatePaddleAngularVelocity(float angularVelocityZ){
+    public void updatePaddleAngularVelocity(float angularVelocityZ) {
         paddle.setTheta(angularVelocityZ, deltaT);
     }
 
@@ -160,7 +118,7 @@ public class GameLoop extends Thread {
         super.run();
         while (true) {
             try {
-                if(gameView.getRestart()){
+                if (gameView.getRestart()) {
                     initiateGame();
                     gameView.setRestart(false);
                 }
@@ -170,28 +128,22 @@ public class GameLoop extends Thread {
                 Coordinate paddleStopPos = paddle.getStopPosition();
 
 
-                if (calculateDistanceFromCircleToLineSegment((float) paddleStartPos.x, (float) paddleStartPos.y, //collision darim
-                        (float) paddleStopPos.x, (float) paddleStopPos.y,
-                        (float) ballPos.x, (float) ballPos.y, ball.getRadius()) < ball.getRadius() + 20) {  // TODO: 30 or 0??
+                if (calculateDistanceFromCircleToLineSegment(paddleStartPos.x, paddleStartPos.y, //collision darim
+                        paddleStopPos.x, paddleStopPos.y,
+                        ballPos.x, ballPos.y, ball.getRadius()) < ball.getRadius() + 20) {  // TODO: 30 or 0??
 //                    ball.reverseBallVelocity();
-                    if(!isCollision) {
+                    if (!isCollision) {
                         isCollision = true;
                         ball.handlePaddleCollisions(paddle.getTheta());
                     }
-                }
-//
-//                    if (isCollision(ballPos, paddleStartPos, paddleStopPos, ball.getRadius())) {
-////                        ball.reverseBallVelocity();
-//                        ball.handlePaddleCollisions(paddle.getTheta());
-//                    }
-                else {
+                } else {
                     isCollision = false;
                     gameView.updateBallPosition((int) ballPos.getX(), (int) ballPos.getY());
                     gameView.updatePaddlePosition((int) paddleStartPos.getX(), (int) paddleStartPos.getY(), (int) paddleStopPos.getX(), (int) paddleStopPos.getY());
 
                 }
                 ball.updatePosition(deltaT);
-                paddle.updatePosition(deltaT);
+                paddle.updatePosition();
                 Thread.sleep((long) (deltaT * 1000)); //1ms
             } catch (Exception e) {
                 e.printStackTrace();
