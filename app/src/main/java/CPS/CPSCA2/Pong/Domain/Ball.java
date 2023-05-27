@@ -6,7 +6,6 @@ public class Ball {
     private Coordinate position;
     private Coordinate velocity;
     private Coordinate acceleration;
-    private Coordinate theta;
     private int displayWidth;
     private int displayHeight;
     private float radius;
@@ -15,7 +14,6 @@ public class Ball {
         this.position = x;
         this.velocity = v;
         this.acceleration = a;
-        this.theta = new Coordinate(0, 0, 0);
         this.displayWidth = displaySize.first;
         this.displayHeight = displaySize.second;
         this.radius = radius;
@@ -40,9 +38,9 @@ public class Ball {
         velocity.x += acceleration.x * deltaT;
     }
 
-    public void handlePaddleCollisions(float theta) {
-        float vx = (float) (velocity.x * Math.cos(2 * theta) - velocity.y * Math.sin(2 * theta));
-        float vy = (float) (-velocity.x * Math.sin(2 * theta) - velocity.y * Math.cos(2 * theta));
+    public void handlePaddleCollisions(Coordinate theta) {
+        float vx = (float) (velocity.x * Math.cos(2 * theta.z) - velocity.y * Math.sin(2 * theta.z));
+        float vy = (float) (-velocity.x * Math.sin(2 * theta.z) - velocity.y * Math.cos(2 * theta.z));
         velocity.x = vx;
         velocity.y = vy;
     }

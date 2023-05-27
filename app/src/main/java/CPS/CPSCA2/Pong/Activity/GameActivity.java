@@ -12,6 +12,7 @@ import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import CPS.CPSCA2.Pong.Domain.Coordinate;
 import CPS.CPSCA2.Pong.Loop.GameLoop;
 import CPS.CPSCA2.R;
 
@@ -68,8 +69,8 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
             DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
             gameLoop.updatePaddleXAcceleration(event.values[0] * 2 * displayMetrics.widthPixels); // acc m/s^2 * 100cm/1m * widthPixels/50cm = px/s^2
         } else if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
-            float angularVelocityZ = event.values[2];
-            gameLoop.updatePaddleAngularVelocity(angularVelocityZ);
+            Coordinate angularVelocity = new Coordinate(event.values[0], event.values[1], event.values[2]);
+            gameLoop.updatePaddleAngularVelocity(angularVelocity);
         }
     }
 

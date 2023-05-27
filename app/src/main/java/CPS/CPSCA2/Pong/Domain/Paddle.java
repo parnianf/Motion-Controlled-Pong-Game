@@ -11,7 +11,7 @@ public class Paddle {
     private int displayWidth;
     private int displayHeight;
     private float width, height;
-    private float theta;
+    private Coordinate theta;
     private float length;
     private float centerX, centerY;
 
@@ -25,9 +25,10 @@ public class Paddle {
         this.displayHeight = displaySize.second;
         this.width = width;
         this.height = height;
-        this.length = (float) Math.abs(startPosition.x - stopPosition.x);
-        this.centerX = (float) (startPosition.x + this.length / 2);
-        this.centerY = (float) startPosition.y;
+        this.length = Math.abs(startPosition.x - stopPosition.x);
+        this.centerX = startPosition.x + this.length / 2;
+        this.centerY = startPosition.y;
+        this.theta = new Coordinate(0, 0, 0);
     }
 
     private void handleWallCollision() {
@@ -54,8 +55,8 @@ public class Paddle {
     }
 
     public void updatePosition() {
-        float delta_x = (float) ((length / 2) * Math.cos(theta));
-        float delta_y = (float) ((length / 2) * Math.sin(theta));
+        float delta_x = (float) ((length / 2) * Math.cos(theta.z));
+        float delta_y = (float) ((length / 2) * Math.sin(theta.z));
 
         float newStartY = centerY + delta_y;
         float newStopY = centerY - delta_y;
@@ -88,11 +89,14 @@ public class Paddle {
         acceleration.x = ax;
     }
 
-    public void setTheta(float angularVelocityZ, float deltaT) {
-        theta += angularVelocityZ * deltaT;
+    public void setTheta(Coordinate angularVelocity, float deltaT) {
+        theta.x += angularVelocity.x * deltaT;
+        theta.y += angularVelocity.y * deltaT;
+        theta.z += angularVelocity.z * deltaT;
+
     }
 
-    public float getTheta() {
+    public Coordinate getTheta() {
         return theta;
     }
 

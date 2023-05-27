@@ -108,8 +108,8 @@ public class GameLoop extends Thread {
         paddle.setPaddleCenter(deltaT);
     }
 
-    public void updatePaddleAngularVelocity(float angularVelocityZ) {
-        paddle.setTheta(angularVelocityZ, deltaT);
+    public void updatePaddleAngularVelocity(Coordinate angularVelocity) {
+        paddle.setTheta(angularVelocity, deltaT);
     }
 
     @Override
