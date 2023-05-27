@@ -47,7 +47,7 @@ public class Ball {
     }
 
     public void handlePaddleCollisions(Coordinate theta, float deltaT) {
-        if (Objects.equals(mode, "normal")) {
+        if (Objects.equals(mode, "advanced")) {
             float vz = 0;
             if (Math.abs(acceleration.z) > 20) {
                 vz = Math.abs(acceleration.z) * deltaT * 2000;

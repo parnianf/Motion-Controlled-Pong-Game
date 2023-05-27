@@ -32,7 +32,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
-        gameView = (GameView) findViewById(R.id.game_view);
+        gameView = findViewById(R.id.game_view);
         Pair<Integer, Integer> screen = new Pair<>(displayMetrics.widthPixels, displayMetrics.heightPixels);
 
         gameType = (String) getIntent().getExtras().get("game_type");

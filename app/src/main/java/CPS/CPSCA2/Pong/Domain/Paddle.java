@@ -6,25 +6,21 @@ import android.util.Pair;
 public class Paddle {
     private Coordinate startPosition;
     private Coordinate stopPosition;
-    private Coordinate velocity;
-    private Coordinate acceleration;
-    private int displayWidth;
-    private int displayHeight;
-    private float width, height;
-    private Coordinate theta;
-    private float length;
-    private float centerX, centerY;
+    private final Coordinate velocity;
+    private final Coordinate acceleration;
+    private final int displayWidth;
+    private final Coordinate theta;
+    private final float length;
+    private float centerX;
+    private final float centerY;
 
     public Paddle(Coordinate startPosition, Coordinate stopPosition, Coordinate v, Coordinate a,
-                  Pair<Integer, Integer> displaySize, int width, int height) {
+                  Pair<Integer, Integer> displaySize) {
         this.startPosition = startPosition;
         this.stopPosition = stopPosition;
         this.velocity = v;
         this.acceleration = a;
         this.displayWidth = displaySize.first;
-        this.displayHeight = displaySize.second;
-        this.width = width;
-        this.height = height;
         this.length = Math.abs(startPosition.x - stopPosition.x);
         this.centerX = startPosition.x + this.length / 2;
         this.centerY = startPosition.y;
@@ -48,16 +44,6 @@ public class Paddle {
     public Coordinate getStopPosition() {
         return stopPosition;
     }
-
-//    public void setPaddleCenter(double deltaT) {
-//        float acc = (float) (acceleration.x * Math.cos(theta.y) * Math.cos(theta.z) + acceleration.y * Math.sin(theta.y) * Math.sin(theta.z) + acceleration.z * Math.cos(theta.y) * Math.sin(theta.z));
-////        float acc = acceleration.x;
-//        if (acc * velocity.x < 0){
-//            acc *= 0.1;
-//        }
-//        centerX += (float) -((0.5 * acc * Math.pow(deltaT, 2)) + (velocity.x * deltaT));
-//        updateVelocity(deltaT);
-//    }
 
     public void setPaddleCenter(double deltaT) {
         float acc = (float) (acceleration.x * Math.cos(theta.y) * Math.cos(theta.z) + acceleration.y * Math.sin(theta.y) * Math.sin(theta.z) + acceleration.z * Math.cos(theta.y) * Math.sin(theta.z));

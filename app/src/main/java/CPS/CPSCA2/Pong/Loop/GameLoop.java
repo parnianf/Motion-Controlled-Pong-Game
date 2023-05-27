@@ -9,25 +9,22 @@ import CPS.CPSCA2.Pong.Domain.Coordinate;
 import CPS.CPSCA2.Pong.Domain.Paddle;
 
 public class GameLoop extends Thread {
-    private final boolean running;
     private final float deltaT;
     Ball ball;
     Paddle paddle;
     GameView gameView;
     boolean isRunning;
     Pair<Integer, Integer> screen;
-    private String mode;
+    private final String mode;
 
 
     public GameLoop(GameView view, float dt, Pair<Integer, Integer> screen, String mode) {
         this.gameView = view;
-        this.running = true;
         this.deltaT = dt;
         isRunning = true;
         this.screen = screen;
         initiateGame();
         this.mode = mode;
-
     }
 
     public void updateBallAcceleration(float az) {
@@ -50,7 +47,7 @@ public class GameLoop extends Thread {
                 new Coordinate(paddleStartPositionX, paddlePositionY, 0),
                 new Coordinate(paddleStopPositionX, paddlePositionY, 0),
                 new Coordinate(0, 0, 0),
-                new Coordinate((float) 0.1, 0, 0), screen, 400, 200);
+                new Coordinate((float) 0.1, 0, 0), screen);
     }
 
     public void endLoop() {
@@ -81,32 +78,8 @@ public class GameLoop extends Thread {
         float distanceToProjection = distance(circleX, circleY, projectionX, projectionY);
 
         // Calculate the distance between the circle center and the line segment
-        float distanceToLineSegment = distanceToProjection - circleRadius;
 
-        return distanceToLineSegment;
-    }
-
-    public boolean isCollision(Coordinate ballPos, Coordinate paddleStartPos, Coordinate paddleStopPos, float ballRadius) {
-        float ballX = ballPos.getX();
-        float ballY = ballPos.getY();
-        float paddleX1 = paddleStartPos.getX();
-        float paddleY1 = paddleStartPos.getY();
-        float paddleX2 = paddleStopPos.getX();
-        float paddleY2 = paddleStopPos.getY();
-
-        // Find the equation of the line that represents the paddle
-        float m = (paddleY2 - paddleY1) / (paddleX2 - paddleX1);
-        float b = paddleY1 - m * paddleX1;
-
-        // Find the y-coordinate of the line at the x-coordinate of the ball
-        float paddleY = m * ballX + b;
-
-        // Check if the ball's y-coordinate falls within the range of y-coordinates that count as a hit
-        float t = 50; // thickness of the paddle
-        float yMin = paddleY - ballRadius - t;
-        float yMax = paddleY + ballRadius + t;
-        return ballY > yMin && ballY < yMax &&
-                ballX > (paddleX1 - ballRadius - t) && ballX < (paddleX2 + ballRadius + t);
+        return distanceToProjection - circleRadius;
     }
 
     public void updatePaddleXAcceleration(Coordinate a, double deltaTime) {
