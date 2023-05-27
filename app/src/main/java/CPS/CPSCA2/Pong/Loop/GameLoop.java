@@ -116,6 +116,10 @@ public class GameLoop extends Thread {
         paddle.setTheta(angularVelocity, deltaTime);
     }
 
+    public void updateBallAcceleration(float az){
+        ball.setZAcceleration(az);
+    }
+
     @Override
     public void run() {
         boolean isCollision = false;
@@ -138,7 +142,7 @@ public class GameLoop extends Thread {
 //                    ball.reverseBallVelocity();
                     if (!isCollision) {
                         isCollision = true;
-                        ball.handlePaddleCollisions(paddle.getTheta());
+                        ball.handlePaddleCollisions(paddle.getTheta(), deltaT);
                     }
                 } else {
                     isCollision = false;

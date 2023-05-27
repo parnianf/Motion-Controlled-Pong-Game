@@ -23,6 +23,10 @@ public class Ball {
         return position;
     }
 
+    public void setZAcceleration(float az){
+        acceleration.z = az;
+    }
+
 
     public void updatePosition(double deltaT) {
         float new_x = (float) ((0.5 * acceleration.x * Math.pow(deltaT, 2)) + (velocity.x * deltaT) + position.x);
@@ -38,9 +42,15 @@ public class Ball {
         velocity.x += acceleration.x * deltaT;
     }
 
-    public void handlePaddleCollisions(Coordinate theta) {
+    public void handlePaddleCollisions(Coordinate theta, float deltaT) {
+        float vz = 0;
+        if(Math.abs(acceleration.z) > 20) {
+            vz = Math.abs(acceleration.z) * deltaT * 2000;
+        }
         float vx = (float) (velocity.x * Math.cos(2 * theta.z) - velocity.y * Math.sin(2 * theta.z));
+        vx += vz * (vx > 0 ? 1 : -1);
         float vy = (float) (-velocity.x * Math.sin(2 * theta.z) - velocity.y * Math.cos(2 * theta.z));
+        vy += vz * (vy > 0 ? 1 : -1);
         velocity.x = vx;
         velocity.y = vy;
     }

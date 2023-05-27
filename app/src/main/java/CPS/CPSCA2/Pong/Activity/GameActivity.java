@@ -57,7 +57,8 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     private void initializeSensors() {
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
-        accelerometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
+//        accelerometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
+        accelerometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         gyroscopeSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
 
         sensorManager.registerListener(this, accelerometerSensor, SensorManager.SENSOR_DELAY_GAME);
@@ -68,10 +69,11 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     public void onSensorChanged(SensorEvent event) {
         if (timestamp == 0) timestamp = event.timestamp;
         if (timestamp1 == 0 ) timestamp1 = event.timestamp;
-        if (event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
             Coordinate acceleration = new Coordinate(event.values[0] * 2 * displayMetrics.widthPixels, event.values[1] * 2 * displayMetrics.widthPixels, event.values[2] * 2 * displayMetrics.widthPixels);
             gameLoop.updatePaddleXAcceleration(acceleration, (double) (event.timestamp - timestamp) / 1000000000);
+            gameLoop.updateBallAcceleration(event.values[2]);
             timestamp = event.timestamp;// acc m/s^2 * 100cm/1m * widthPixels/50cm = px/s^2
         } else if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
             Coordinate angularVelocity = new Coordinate(event.values[0], event.values[1], event.values[2]);
