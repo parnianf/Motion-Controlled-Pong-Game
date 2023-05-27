@@ -13,12 +13,9 @@ import android.view.View;
 public class GameView extends View {
     Context context;
     private final Paint mPaint;
-
     int ballX = 0, ballY = 0;
     int paddleStartX, paddleStartY, paddleStopX, paddleStopY;
-
     boolean restart = false;
-
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -66,7 +63,6 @@ public class GameView extends View {
 
         if (event.getAction() == MotionEvent.ACTION_DOWN) {// Check if touch point is on the line
             if (isTouchOnLine(touchX, touchY)) {
-                // Restart the game or perform desired action
                 restart = true;
             }
         }
@@ -84,8 +80,7 @@ public class GameView extends View {
 
     private boolean isTouchOnLine(float touchX, float touchY) {
         // Calculate the distance from the touch point to the line using line equation
-        float distance = Math.abs((paddleStopY - paddleStartY) * touchX - (paddleStopX - paddleStartX) * touchY + paddleStopX * paddleStartY - paddleStopY * paddleStartX)
-                / (float) Math.sqrt(Math.pow(paddleStopY - paddleStartY, 2) + Math.pow(paddleStopX - paddleStartX, 2));
+        float distance = Math.abs((paddleStopY - paddleStartY) * touchX - (paddleStopX - paddleStartX) * touchY + paddleStopX * paddleStartY - paddleStopY * paddleStartX) / (float) Math.sqrt(Math.pow(paddleStopY - paddleStartY, 2) + Math.pow(paddleStopX - paddleStartX, 2));
 
         // Define a threshold to determine if the touch point is close enough to the line
         float threshold = 30f;

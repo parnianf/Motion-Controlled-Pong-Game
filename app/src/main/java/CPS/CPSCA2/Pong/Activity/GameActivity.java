@@ -39,8 +39,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         gameLoop = new GameLoop(gameView, (float) 0.016, screen, gameType);
         gameLoop.start();
 
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
     }
@@ -74,29 +73,18 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         if (timestamp == 0) timestamp = event.timestamp;
         if (timestamp1 == 0) timestamp1 = event.timestamp;
 
-        if (gameType.equals("normal")) {
-            if (event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
-                DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-                Coordinate acceleration = new Coordinate(event.values[0] * 2 * displayMetrics.widthPixels, event.values[1] * 2 * displayMetrics.widthPixels, event.values[2] * 2 * displayMetrics.widthPixels);
-                gameLoop.updatePaddleXAcceleration(acceleration, (double) (event.timestamp - timestamp) / 1000000000);
-                timestamp = event.timestamp;// acc m/s^2 * 100cm/1m * widthPixels/50cm = px/s^2
-            } else if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
-                Coordinate angularVelocity = new Coordinate(event.values[0], event.values[1], event.values[2]);
-                gameLoop.updatePaddleAngularVelocity(angularVelocity, (double) (event.timestamp - timestamp1) / 1000000000);
-                timestamp1 = event.timestamp;
-            }
-        } else {
-            if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-                DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-                Coordinate acceleration = new Coordinate(event.values[0] * 2 * displayMetrics.widthPixels, event.values[1] * 2 * displayMetrics.widthPixels, event.values[2] * 2 * displayMetrics.widthPixels);
-                gameLoop.updatePaddleXAcceleration(acceleration, (double) (event.timestamp - timestamp) / 1000000000);
-                gameLoop.updateBallAcceleration(event.values[2]);
-                timestamp = event.timestamp;// acc m/s^2 * 100cm/1m * widthPixels/50cm = px/s^2
-            } else if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
-                Coordinate angularVelocity = new Coordinate(event.values[0], event.values[1], event.values[2]);
-                gameLoop.updatePaddleAngularVelocity(angularVelocity, (double) (event.timestamp - timestamp1) / 1000000000);
-                timestamp1 = event.timestamp;
-            }
+        if (event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION || event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+            Coordinate acceleration = new Coordinate(event.values[0] * 2 * displayMetrics.widthPixels, event.values[1] * 2 * displayMetrics.widthPixels, event.values[2] * 2 * displayMetrics.widthPixels);
+
+            gameLoop.updatePaddleXAcceleration(acceleration, (double) (event.timestamp - timestamp) / 1e9);
+
+            if (gameType.equals("advanced")) gameLoop.updateBallAcceleration(event.values[2]);
+            timestamp = event.timestamp;// acc m/s^2 * 100cm/1m * widthPixels/50cm = px/s^2
+        } else if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
+            Coordinate angularVelocity = new Coordinate(event.values[0], event.values[1], event.values[2]);
+            gameLoop.updatePaddleAngularVelocity(angularVelocity, (double) (event.timestamp - timestamp1) / 1e9);
+            timestamp1 = event.timestamp;
         }
     }
 

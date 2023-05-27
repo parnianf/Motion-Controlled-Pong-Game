@@ -32,22 +32,14 @@ public class GameLoop extends Thread {
     }
 
     public void initiateGame() {
-        ball = new Ball(
-                new Coordinate(Integer.parseInt(String.valueOf(screen.first / 2)), 10, 0),
-                new Coordinate(0, 0, 0),
-                new Coordinate(0, 2000, 0), //TODO: why 1000?
-                screen, 10, mode
-        );
+        ball = new Ball(new Coordinate(Integer.parseInt(String.valueOf(screen.first / 2)), 10, 0), new Coordinate(0, 0, 0), new Coordinate(0, 2000, 0), //TODO: why 1000?
+                screen, 10, mode);
 
         int paddleStartPositionX = Integer.parseInt(String.valueOf(screen.first / 3));
         int paddleStopPositionX = Integer.parseInt(String.valueOf(2 * screen.first / 3));
         int paddlePositionY = Integer.parseInt(String.valueOf(3 * screen.second / 4));
 
-        paddle = new Paddle(
-                new Coordinate(paddleStartPositionX, paddlePositionY, 0),
-                new Coordinate(paddleStopPositionX, paddlePositionY, 0),
-                new Coordinate(0, 0, 0),
-                new Coordinate((float) 0.1, 0, 0), screen);
+        paddle = new Paddle(new Coordinate(paddleStartPositionX, paddlePositionY, 0), new Coordinate(paddleStopPositionX, paddlePositionY, 0), new Coordinate(0, 0, 0), new Coordinate((float) 0.1, 0, 0), screen);
     }
 
     public void endLoop() {
@@ -58,8 +50,7 @@ public class GameLoop extends Thread {
         return (float) Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y2 - y1, 2));
     }
 
-    public float calculateDistanceFromCircleToLineSegment(float lineStartX, float lineStartY, float lineEndX,
-                                                          float lineEndY, float circleX, float circleY, float circleRadius) {
+    public float calculateDistanceFromCircleToLineSegment(float lineStartX, float lineStartY, float lineEndX, float lineEndY, float circleX, float circleY, float circleRadius) {
         float lineLength = distance(lineStartX, lineStartY, lineEndX, lineEndY);
         if (lineLength == 0f) {
             // The line segment is just a point, so return the distance between the circle center and that point
@@ -67,8 +58,7 @@ public class GameLoop extends Thread {
         }
 
         // Calculate the projection of the circle center onto the line segment
-        float t = ((circleX - lineStartX) * (lineEndX - lineStartX) +
-                (circleY - lineStartY) * (lineEndY - lineStartY)) / (lineLength * lineLength);
+        float t = ((circleX - lineStartX) * (lineEndX - lineStartX) + (circleY - lineStartY) * (lineEndY - lineStartY)) / (lineLength * lineLength);
         t = Math.max(0f, Math.min(1f, t)); // Clamp t to ensure it's within the line segment range
 
         float projectionX = lineStartX + t * (lineEndX - lineStartX);
@@ -112,8 +102,7 @@ public class GameLoop extends Thread {
 
 
                 if (calculateDistanceFromCircleToLineSegment(paddleStartPos.x, paddleStartPos.y, //collision darim
-                        paddleStopPos.x, paddleStopPos.y,
-                        ballPos.x, ballPos.y, ball.getRadius()) < ball.getRadius() + 20) {  // TODO: 30 or 0??
+                        paddleStopPos.x, paddleStopPos.y, ballPos.x, ballPos.y, ball.getRadius()) < ball.getRadius() + 20) {  // TODO: 30 or 0??
 //                    ball.reverseBallVelocity();
                     if (!isCollision) {
                         isCollision = true;

@@ -14,8 +14,7 @@ public class Paddle {
     private float centerX;
     private final float centerY;
 
-    public Paddle(Coordinate startPosition, Coordinate stopPosition, Coordinate v, Coordinate a,
-                  Pair<Integer, Integer> displaySize) {
+    public Paddle(Coordinate startPosition, Coordinate stopPosition, Coordinate v, Coordinate a, Pair<Integer, Integer> displaySize) {
         this.startPosition = startPosition;
         this.stopPosition = stopPosition;
         this.velocity = v;
