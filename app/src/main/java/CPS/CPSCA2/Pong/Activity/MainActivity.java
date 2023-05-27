@@ -20,8 +20,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        normalGameBtn = (Button) findViewById(R.id.normal_game);
-        advancedGameBtn = (Button) findViewById(R.id.advanced_game);
+        normalGameBtn = findViewById(R.id.normal_game);
+        advancedGameBtn = findViewById(R.id.advanced_game);
 
         normalGameBtn.setOnClickListener(v -> {
             Intent newIntent = new Intent(this, NormalGameActivity.class);
@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         advancedGameBtn.setOnClickListener(v -> {
-            Intent newIntent = new Intent(this, AdvancedGameActivity.class);
+            Intent newIntent = new Intent(this, NormalGameActivity.class);
 //            newIntent.putExtra("game_type","advanced");
             startActivity(newIntent);
         });

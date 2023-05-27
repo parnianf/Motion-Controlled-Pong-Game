@@ -5,7 +5,6 @@ import android.util.Pair;
 
 import CPS.CPSCA2.Pong.Activity.GameView;
 import CPS.CPSCA2.Pong.Coordinate.Coordinate;
-import CPS.CPSCA2.Pong.Logic.Normal.*;
 
 public class GameLoop extends Thread {
     private final boolean running;
@@ -15,16 +14,22 @@ public class GameLoop extends Thread {
     GameView gameView;
     boolean isRunning;
     Pair<Integer, Integer> screen;
+    private String mode;
 
 
-    public GameLoop(GameView view, float dt, Pair<Integer, Integer> screen) {
+    public GameLoop(GameView view, float dt, Pair<Integer, Integer> screen, String mode) {
         this.gameView = view;
         this.running = true;
         this.deltaT = dt;
         isRunning = true;
         this.screen = screen;
         initiateGame();
+        this.mode = mode;
 
+    }
+
+    public void updateBallAcceleration(float az){
+        ball.setZAcceleration(az);
     }
 
     public void initiateGame() {
@@ -32,7 +37,7 @@ public class GameLoop extends Thread {
                 new Coordinate(Integer.parseInt(String.valueOf(screen.first / 2)), 10, 0),
                 new Coordinate(0, 0, 0),
                 new Coordinate(0, 2000, 0), //TODO: why 1000?
-                screen, 10
+                screen, 10, mode
         );
 
         int paddleStartPositionX = Integer.parseInt(String.valueOf(screen.first / 3));
@@ -137,7 +142,7 @@ public class GameLoop extends Thread {
 //                    ball.reverseBallVelocity();
                     if (!isCollision) {
                         isCollision = true;
-                        ball.handlePaddleCollisions(paddle.getTheta());
+                        ball.handlePaddleCollisions(paddle.getTheta(), deltaT);
                     }
                 } else {
                     isCollision = false;

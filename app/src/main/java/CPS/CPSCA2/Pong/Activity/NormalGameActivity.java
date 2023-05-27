@@ -38,7 +38,8 @@ public class NormalGameActivity extends AppCompatActivity implements SensorEvent
 
         gameView = (GameView) findViewById(R.id.game_view);
         Pair<Integer, Integer> screen = new Pair<>(displayMetrics.widthPixels, displayMetrics.heightPixels);
-        gameLoop = new GameLoop(gameView, (float) 0.016, screen);
+        String gameType = (String) getIntent().getExtras().get("game_type");
+        gameLoop = new GameLoop(gameView, (float) 0.016, screen, gameType);
         gameLoop.start();
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
