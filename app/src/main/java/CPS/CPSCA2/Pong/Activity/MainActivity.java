@@ -34,9 +34,5 @@ public class MainActivity extends AppCompatActivity {
             newIntent.putExtra("game_type", "advanced");
             startActivity(newIntent);
         });
-
-//        Intent newIntent = new Intent(this, GameActivity.class);
-//        startActivity(newIntent);
-
     }
 }

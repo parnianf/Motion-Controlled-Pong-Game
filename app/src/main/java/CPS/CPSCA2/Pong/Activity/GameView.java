@@ -1,21 +1,18 @@
 package CPS.CPSCA2.Pong.Activity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
 public class GameView extends View {
-    private Bitmap mBitmap;
-    private Canvas mCanvas;
-    private Path mPath;
     Context context;
-    private Paint mPaint;
+    private final Paint mPaint;
 
     int ballX = 0, ballY = 0;
     int paddleStartX, paddleStartY, paddleStopX, paddleStopY;
@@ -36,8 +33,8 @@ public class GameView extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        mBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-        mCanvas = new Canvas(mBitmap);
+        Bitmap mBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        new Canvas(mBitmap);
     }
 
     @Override
@@ -61,19 +58,17 @@ public class GameView extends View {
         invalidate();
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         float touchX = event.getX();
         float touchY = event.getY();
 
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                // Check if touch point is on the line
-                if (isTouchOnLine(touchX, touchY)) {
-                    // Restart the game or perform desired action
-                    restart = true;
-                }
-                break;
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {// Check if touch point is on the line
+            if (isTouchOnLine(touchX, touchY)) {
+                // Restart the game or perform desired action
+                restart = true;
+            }
         }
 
         return true; // Return true to indicate that we've handled the event

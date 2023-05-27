@@ -6,12 +6,12 @@ import java.util.Objects;
 
 public class Ball {
     private Coordinate position;
-    private Coordinate velocity;
-    private Coordinate acceleration;
-    private int displayWidth;
-    private int displayHeight;
-    private float radius;
-    private String mode;
+    private final Coordinate velocity;
+    private final Coordinate acceleration;
+    private final int displayWidth;
+    private final int displayHeight;
+    private final float radius;
+    private final String mode;
 
     public Ball(Coordinate x, Coordinate v, Coordinate a, Pair<Integer, Integer> displaySize, float radius, String mode) {
         this.position = x;
@@ -28,7 +28,6 @@ public class Ball {
     }
 
     public void setZAcceleration(float az) {
-
         acceleration.z = az;
     }
 
