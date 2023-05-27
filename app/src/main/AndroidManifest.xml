@@ -13,7 +13,7 @@
         android:supportsRtl="true">
         <activity
             android:name="CPS.CPSCA2.Pong.Activity.GameActivity"
-            android:screenOrientation="fullSensor"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat" />
         <!--
                Set to true if your app is Standalone, that is, it does not require the handheld
