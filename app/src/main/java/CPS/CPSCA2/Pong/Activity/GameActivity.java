@@ -37,7 +37,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
         gameView = (GameView) findViewById(R.id.game_view);
         Pair<Integer, Integer> screen = new Pair<>(displayMetrics.widthPixels, displayMetrics.heightPixels);
-        gameLoop = new GameLoop(gameView, (float) 0.010, screen);
+        gameLoop = new GameLoop(gameView, (float) 0.016, screen);
         gameLoop.start();
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -59,8 +59,8 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         accelerometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
         gyroscopeSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
 
-        sensorManager.registerListener(this, accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
-        sensorManager.registerListener(this, gyroscopeSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(this, accelerometerSensor, SensorManager.SENSOR_DELAY_GAME);
+        sensorManager.registerListener(this, gyroscopeSensor, SensorManager.SENSOR_DELAY_GAME);
     }
 
     @Override

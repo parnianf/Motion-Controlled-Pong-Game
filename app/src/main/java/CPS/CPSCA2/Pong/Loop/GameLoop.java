@@ -15,6 +15,7 @@ public class GameLoop extends Thread {
     Paddle paddle;
     GameView gameView;
     boolean isRunning;
+    Pair<Integer, Integer> screen;
 
 
     public GameLoop(GameView view, float dt, Pair<Integer, Integer> screen) {
@@ -22,11 +23,16 @@ public class GameLoop extends Thread {
         this.running = true;
         this.deltaT = dt;
         isRunning = true;
+        this.screen = screen;
+        initiateGame();
 
+    }
+
+    public void initiateGame(){
         ball = new Ball(
                 new Coordinate(Integer.parseInt(String.valueOf(screen.first / 2)), 10, 0),
                 new Coordinate(0, 0, 0),
-                new Coordinate(0, 1000, 0), //TODO: why 1000?
+                new Coordinate(0, 2000, 0), //TODO: why 1000?
                 screen, 10
         );
 
@@ -39,7 +45,6 @@ public class GameLoop extends Thread {
                 new Coordinate(paddleStopPositionX, paddlePositionY, 0),
                 new Coordinate(0, 0, 0),
                 new Coordinate(0.1, 0, 0), screen, 400, 200);
-
     }
 
     public void endLoop() {
@@ -118,9 +123,15 @@ public class GameLoop extends Thread {
 
     @Override
     public void run() {
+        boolean isCollision = false;
         super.run();
         while (true) {
             try {
+                if(gameView.getRestart()){
+                    initiateGame();
+                    gameView.setRestart(false);
+                }
+
                 Coordinate ballPos = ball.getPosition();
                 Coordinate paddleStartPos = paddle.getStartPosition();
                 Coordinate paddleStopPos = paddle.getStopPosition();
@@ -130,7 +141,10 @@ public class GameLoop extends Thread {
                         (float) paddleStopPos.x, (float) paddleStopPos.y,
                         (float) ballPos.x, (float) ballPos.y, ball.getRadius()) < 30) {  // TODO: 30 or 0??
 //                    ball.reverseBallVelocity();
-                    ball.handlePaddleCollisions(paddle.getTheta());
+                    if(!isCollision) {
+                        isCollision = true;
+                        ball.handlePaddleCollisions(paddle.getTheta());
+                    }
                 }
 //
 //                    if (isCollision(ballPos, paddleStartPos, paddleStopPos, ball.getRadius())) {
@@ -138,7 +152,7 @@ public class GameLoop extends Thread {
 //                        ball.handlePaddleCollisions(paddle.getTheta());
 //                    }
                 else {
-
+                    isCollision = false;
                     gameView.updateBallPosition((int) ballPos.getX(), (int) ballPos.getY());
                     gameView.updatePaddlePosition((int) paddleStartPos.getX(), (int) paddleStartPos.getY(), (int) paddleStopPos.getX(), (int) paddleStopPos.getY());
 

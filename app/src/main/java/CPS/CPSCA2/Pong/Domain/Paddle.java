@@ -36,6 +36,17 @@ public class Paddle {
         this.centerY = (float) startPosition.y;
     }
 
+    private void handleWallCollision() {
+        if (centerX > displayWidth) {
+            centerX = displayWidth;
+            velocity.x = 0;
+        }
+        else if(centerX < 0){
+            centerX = 0;
+            velocity.x = 0;
+        }
+    }
+
 //    public void setNextPosition(double deltaT) {
 //        position = getNextPosition(deltaT);
 //    }
@@ -58,6 +69,7 @@ public class Paddle {
 
     public void setPaddleCenter(float deltaT){
         centerX += (float) ((0.5 * acceleration.x * Math.pow(deltaT, 2)) + (velocity.x * deltaT));
+        updateVelocity(deltaT);
     }
 
     public void updatePosition(float deltaT) {
@@ -70,12 +82,20 @@ public class Paddle {
         float newStartX = centerX - delta_x;
         float newStopX = centerX + delta_x;
         setPosition(newStartX, newStartY, newStopX, newStopY);
-        updateVelocity(deltaT);
+        handleWallCollision();
     }
 
     private void updateVelocity(double deltaT) {
-//        velocity.y += acceleration.y * deltaT;
         velocity.x += acceleration.x * deltaT;
+        float velocityAsb = (float) Math.abs(velocity.x);
+        int sign = velocity.x > 0 ? 1 : -1;
+        if ((velocityAsb - 2 * deltaT <= 0) || Math.abs(acceleration.x) < 100){
+            velocity.x = 0;
+        } else {
+            velocity.x = (velocityAsb - (2 * deltaT)) * sign;
+        }
+//        Log.i("velocity", String.valueOf(velocity.x));
+//        Log.i("acceleration", String.valueOf(acceleration.x));
     }
 
     public void setPosition(float newStartX, float newStartY, float newStopX, float newStopY) {
@@ -92,7 +112,6 @@ public class Paddle {
     }
 
     public float getTheta(){return theta;}
-
 
 //    private void updateVelocity(double deltaT) {
 //        Coordinate amountToAdd = acceleration.multiplyVectorByNum(deltaT);
