@@ -69,7 +69,7 @@ public class Paddle {
 
     private void updateVelocity(double deltaT) {
         velocity.x += acceleration.x * deltaT;
-        float velocityAsb = (float) Math.abs(velocity.x);
+        float velocityAsb = Math.abs(velocity.x);
         int sign = velocity.x > 0 ? 1 : -1;
         if ((velocityAsb - 2 * deltaT <= 0) || Math.abs(acceleration.x) < 100) {
             velocity.x = 0;
@@ -85,8 +85,8 @@ public class Paddle {
         stopPosition = new Coordinate(newStopX, newStopY, stopPosition.getZ());
     }
 
-    public void setAcceleration(float ax) {
-        acceleration.x = ax;
+    public void setAcceleration(Coordinate a) {
+        acceleration = a;
     }
 
     public void setTheta(Coordinate angularVelocity, float deltaT) {

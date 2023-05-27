@@ -67,7 +67,8 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
             DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-            gameLoop.updatePaddleXAcceleration(event.values[0] * 2 * displayMetrics.widthPixels); // acc m/s^2 * 100cm/1m * widthPixels/50cm = px/s^2
+            Coordinate acceleration = new Coordinate(event.values[0] * 2 * displayMetrics.widthPixels, event.values[1] * 2 * displayMetrics.widthPixels, event.values[2] * 2 * displayMetrics.widthPixels);
+            gameLoop.updatePaddleXAcceleration(acceleration); // acc m/s^2 * 100cm/1m * widthPixels/50cm = px/s^2
         } else if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
             Coordinate angularVelocity = new Coordinate(event.values[0], event.values[1], event.values[2]);
             gameLoop.updatePaddleAngularVelocity(angularVelocity);

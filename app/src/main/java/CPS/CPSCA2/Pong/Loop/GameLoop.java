@@ -103,8 +103,8 @@ public class GameLoop extends Thread {
                 ballX > (paddleX1 - ballRadius - t) && ballX < (paddleX2 + ballRadius + t);
     }
 
-    public void updatePaddleXAcceleration(float ax) {
-        paddle.setAcceleration(ax);
+    public void updatePaddleXAcceleration(Coordinate a) {
+        paddle.setAcceleration(a);
         paddle.setPaddleCenter(deltaT);
     }
 
