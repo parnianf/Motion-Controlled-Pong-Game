@@ -13,12 +13,12 @@ public class Ball {
     private final float radius;
     private final String mode;
 
-    public Ball(Coordinate x, Coordinate v, Coordinate a, Pair<Integer, Integer> displaySize, float radius, String mode) {
+    public Ball(Coordinate x, Coordinate v, Coordinate a, int displayWidth, int displayHeight, float radius, String mode) {
         this.position = x;
         this.velocity = v;
         this.acceleration = a;
-        this.displayWidth = displaySize.first;
-        this.displayHeight = displaySize.second;
+        this.displayWidth = displayWidth;
+        this.displayHeight = displayHeight;
         this.radius = radius;
         this.mode = mode;
     }
@@ -77,5 +77,9 @@ public class Ball {
 
     public float getRadius() {
         return radius;
+    }
+
+    public Coordinate getVelocity() {
+        return velocity;
     }
 }

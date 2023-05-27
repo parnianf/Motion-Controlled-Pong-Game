@@ -33,7 +33,7 @@ public class GameLoop extends Thread {
 
     public void initiateGame() {
         ball = new Ball(new Coordinate(Integer.parseInt(String.valueOf(screen.first / 2)), 10, 0), new Coordinate(0, 0, 0), new Coordinate(0, 2000, 0), //TODO: why 1000?
-                screen, 10, mode);
+                screen.first, screen.second, 10, mode);
 
         int paddleStartPositionX = Integer.parseInt(String.valueOf(screen.first / 3));
         int paddleStopPositionX = Integer.parseInt(String.valueOf(2 * screen.first / 3));
