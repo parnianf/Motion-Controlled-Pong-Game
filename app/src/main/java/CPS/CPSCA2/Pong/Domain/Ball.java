@@ -45,11 +45,11 @@ public class Ball {
     }
 
 //    public void handlePaddleCollisions(float theta) {
-//        acceleration.y = 1000 * Math.cos(theta);
-//        acceleration.x = 1000 * Math.sin(theta);
+////        acceleration.y = 1000 * Math.cos(theta);
+////        acceleration.x = 1000 * Math.sin(theta);
 //        float vx = (float) velocity.x;
-//        velocity.x = (float) (vx * Math.cos(2 * theta) + velocity.y * Math.sin(2 * theta));
-//        velocity.y = (float) (-vx * Math.sin(2 * theta) - velocity.y * Math.cos(2 * theta));
+//        velocity.x = (float) (vx * Math.cos(2 * theta) - velocity.y * Math.sin(2 * theta));
+//        velocity.y = (float) (-vx * Math.sin(2 * theta) + velocity.y * Math.cos(2 * theta));
 //    }
 
     public void handlePaddleCollisions(float theta) {

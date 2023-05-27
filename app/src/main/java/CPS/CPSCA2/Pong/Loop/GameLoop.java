@@ -109,18 +109,11 @@ public class GameLoop extends Thread {
 
     public void updatePaddleXAcceleration(float ax) {
         paddle.setAcceleration(ax);
+        paddle.setPaddleCenter(deltaT);
     }
 
     public void updatePaddleAngularVelocity(float angularVelocityZ){
         paddle.setTheta(angularVelocityZ, deltaT);
-    }
-
-    public void updatePaddlePositionByAccelerometer(){
-        paddle.handlePositionByAccelerometer(deltaT);
-    }
-
-    public void updatePaddlePositionByGyroscope(){
-        paddle.handlePositionByGyroscope();
     }
 
     @Override
@@ -133,17 +126,17 @@ public class GameLoop extends Thread {
                 Coordinate paddleStopPos = paddle.getStopPosition();
 
 
-//                if (distanceToLineSegment((float) paddleStartPos.x, (float) paddleStartPos.y, //collision darim
-//                        (float) paddleStopPos.x, (float) paddleStopPos.y,
-//                        (float) ballPos.x, (float) ballPos.y, ball.getRadius()) < 30) {  // TODO: 30 or 0??
-////                    ball.reverseBallVelocity();
-//                    ball.handlePaddleCollisions(paddle.getTheta());
-//                }
-
-                    if (isCollision(ballPos, paddleStartPos, paddleStopPos, ball.getRadius())) {
-//                        ball.reverseBallVelocity();
-                        ball.handlePaddleCollisions(paddle.getTheta());
-                    }
+                if (distanceToLineSegment((float) paddleStartPos.x, (float) paddleStartPos.y, //collision darim
+                        (float) paddleStopPos.x, (float) paddleStopPos.y,
+                        (float) ballPos.x, (float) ballPos.y, ball.getRadius()) < 30) {  // TODO: 30 or 0??
+//                    ball.reverseBallVelocity();
+                    ball.handlePaddleCollisions(paddle.getTheta());
+                }
+//
+//                    if (isCollision(ballPos, paddleStartPos, paddleStopPos, ball.getRadius())) {
+////                        ball.reverseBallVelocity();
+//                        ball.handlePaddleCollisions(paddle.getTheta());
+//                    }
                 else {
 
                     gameView.updateBallPosition((int) ballPos.getX(), (int) ballPos.getY());
@@ -151,10 +144,8 @@ public class GameLoop extends Thread {
 
                 }
                 ball.updatePosition(deltaT);
-//                paddle.updatePosition(deltaT);
-
-
-                Thread.sleep((long) (deltaT * 1000));
+                paddle.updatePosition(deltaT);
+                Thread.sleep((long) (deltaT * 1000)); //1ms
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -1,6 +1,8 @@
 package CPS.CPSCA2.Pong.Domain;
 
 
+import android.os.Debug;
+import android.util.Log;
 import android.util.Pair;
 
 public class Paddle {
@@ -46,14 +48,19 @@ public class Paddle {
         return stopPosition;
     }
 
-    public void handlePositionByAccelerometer(double deltaT){
+//    public void handlePositionByAccelerometer(double deltaT){
+//        centerX += (float) ((0.5 * acceleration.x * Math.pow(deltaT, 2)) + (velocity.x * deltaT));
+//        float newStartX = (float) (centerX - length/2 * Math.cos(theta));
+//        Log.i("speed", String.valueOf(velocity.x));
+//        float newStopX = (float) (centerX + length/2 * Math.cos(theta));
+//        setPosition(newStartX, (float) startPosition.y, newStopX, (float) stopPosition.y);
+//    }
+
+    public void setPaddleCenter(float deltaT){
         centerX += (float) ((0.5 * acceleration.x * Math.pow(deltaT, 2)) + (velocity.x * deltaT));
-        float newStartX = centerX - length/2;
-        float newStopX = centerX + length/2;
-        setPosition(newStartX, (float) startPosition.y, newStopX, (float) stopPosition.y);
     }
 
-    public void handlePositionByGyroscope() {
+    public void updatePosition(float deltaT) {
         float delta_x = (float) ((length / 2) * Math.cos(theta));
         float delta_y = (float) ((length / 2) * Math.sin(theta));
 
@@ -63,8 +70,13 @@ public class Paddle {
         float newStartX = centerX - delta_x;
         float newStopX = centerX + delta_x;
         setPosition(newStartX, newStartY, newStopX, newStopY);
+        updateVelocity(deltaT);
     }
 
+    private void updateVelocity(double deltaT) {
+//        velocity.y += acceleration.y * deltaT;
+        velocity.x += acceleration.x * deltaT;
+    }
 
     public void setPosition(float newStartX, float newStartY, float newStopX, float newStopY) {
         startPosition = new Coordinate(newStartX, newStartY, startPosition.getZ());
