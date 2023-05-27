@@ -1,4 +1,4 @@
-package CPS.CPSCA2.Pong.Domain;
+package CPS.CPSCA2.Pong.Coordinate;
 
 public class Coordinate {
     public float x, y, z;

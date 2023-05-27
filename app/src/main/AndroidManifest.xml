@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true">
         <activity
-            android:name="CPS.CPSCA2.Pong.Activity.GameActivity"
+            android:name="CPS.CPSCA2.Pong.Activity.AdvancedGameActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat" />
         <!--

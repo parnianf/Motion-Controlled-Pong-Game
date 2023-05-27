@@ -1,12 +1,11 @@
-package CPS.CPSCA2.Pong.Loop;
+package CPS.CPSCA2.Pong.Logic.Normal;
 
 
 import android.util.Pair;
 
 import CPS.CPSCA2.Pong.Activity.GameView;
-import CPS.CPSCA2.Pong.Domain.Ball;
-import CPS.CPSCA2.Pong.Domain.Coordinate;
-import CPS.CPSCA2.Pong.Domain.Paddle;
+import CPS.CPSCA2.Pong.Coordinate.Coordinate;
+import CPS.CPSCA2.Pong.Logic.Normal.*;
 
 public class GameLoop extends Thread {
     private final boolean running;
@@ -116,10 +115,6 @@ public class GameLoop extends Thread {
         paddle.setTheta(angularVelocity, deltaTime);
     }
 
-    public void updateBallAcceleration(float az){
-        ball.setZAcceleration(az);
-    }
-
     @Override
     public void run() {
         boolean isCollision = false;
@@ -142,7 +137,7 @@ public class GameLoop extends Thread {
 //                    ball.reverseBallVelocity();
                     if (!isCollision) {
                         isCollision = true;
-                        ball.handlePaddleCollisions(paddle.getTheta(), deltaT);
+                        ball.handlePaddleCollisions(paddle.getTheta());
                     }
                 } else {
                     isCollision = false;

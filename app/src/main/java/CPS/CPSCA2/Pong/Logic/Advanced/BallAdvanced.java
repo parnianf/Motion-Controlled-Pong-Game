@@ -1,8 +1,10 @@
-package CPS.CPSCA2.Pong.Domain;
+package CPS.CPSCA2.Pong.Logic.Advanced;
 
 import android.util.Pair;
 
-public class Ball {
+import CPS.CPSCA2.Pong.Coordinate.Coordinate;
+
+public class BallAdvanced {
     private Coordinate position;
     private Coordinate velocity;
     private Coordinate acceleration;
@@ -10,7 +12,7 @@ public class Ball {
     private int displayHeight;
     private float radius;
 
-    public Ball(Coordinate x, Coordinate v, Coordinate a, Pair<Integer, Integer> displaySize, float radius) {
+    public BallAdvanced(Coordinate x, Coordinate v, Coordinate a, Pair<Integer, Integer> displaySize, float radius) {
         this.position = x;
         this.velocity = v;
         this.acceleration = a;

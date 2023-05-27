@@ -1,9 +1,11 @@
-package CPS.CPSCA2.Pong.Domain;
+package CPS.CPSCA2.Pong.Logic.Advanced;
 
 
 import android.util.Pair;
 
-public class Paddle {
+import CPS.CPSCA2.Pong.Coordinate.Coordinate;
+
+public class PaddleAdvanced {
     private Coordinate startPosition;
     private Coordinate stopPosition;
     private Coordinate velocity;
@@ -15,8 +17,8 @@ public class Paddle {
     private float length;
     private float centerX, centerY;
 
-    public Paddle(Coordinate startPosition, Coordinate stopPosition, Coordinate v, Coordinate a,
-                  Pair<Integer, Integer> displaySize, int width, int height) {
+    public PaddleAdvanced(Coordinate startPosition, Coordinate stopPosition, Coordinate v, Coordinate a,
+                          Pair<Integer, Integer> displaySize, int width, int height) {
         this.startPosition = startPosition;
         this.stopPosition = stopPosition;
         this.velocity = v;
@@ -50,8 +52,8 @@ public class Paddle {
     }
 
     public void setPaddleCenter(double deltaT) {
-//        float acc = (float) (acceleration.x * Math.cos(theta.y) * Math.cos(theta.z) + acceleration.y * Math.sin(theta.y) * Math.sin(theta.z) + acceleration.z * Math.cos(theta.y) * Math.sin(theta.z));
-        float acc = acceleration.x;
+        float acc = (float) (acceleration.x * Math.cos(theta.y) * Math.cos(theta.z) + acceleration.y * Math.sin(theta.y) * Math.sin(theta.z) + acceleration.z * Math.cos(theta.y) * Math.sin(theta.z));
+//        float acc = acceleration.x;
         if (acc * velocity.x < 0){
             acc *= 0.1;
         }
@@ -94,9 +96,9 @@ public class Paddle {
         }
         else {
             acceleration.x = (float) (acceleration.x * 0.2 + a.x * 0.8);
-            acceleration.y = (float) (acceleration.y * 0.2 + a.y * 0.8);
-            acceleration.z = (float) (acceleration.z * 0.2 + a.z * 0.8);
         }
+        acceleration.y = (float) (acceleration.y * 0.2 + a.y * 0.8);
+        acceleration.z = (float) (acceleration.z * 0.2 + a.z * 0.8);
     }
 
     public void setTheta(Coordinate angularVelocity, double deltaT) {
